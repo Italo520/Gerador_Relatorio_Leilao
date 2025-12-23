@@ -231,38 +231,71 @@ def extrair_lotes_de_leilao(page):
         # Tentar encontrar botão de próxima página
         conseguiu_paginar = False
         try:
-            # Scroll até o final da página para garantir que a paginação está visível
+            # Scroll até o final da página
             page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
-            page.wait_for_timeout(300)
+            page.wait_for_timeout(500)
             
-            # Usar XPath específico do botão "próxima" (ícone chevron-right no último li)
-            # O botão próxima está sempre no último li com a classe arrow-right
-            paginacao_ul = page.locator('xpath=/html/body/main/div[2]/div/section[2]/div/div[3]/div[2]/ul')
+            # Estratégias para encontrar o botão "Próxima"
+            botao_next = None
             
-            if paginacao_ul.count() > 0:
-                # Procurar pelo li com classe arrow-right (botão próxima)
-                botao_next_li = paginacao_ul.locator('li.arrow-right').last
-                
-                if botao_next_li.count() > 0:
-                    # Verificar se não está desabilitado
-                    classes = botao_next_li.get_attribute('class') or ''
+            # 1. Tentar pelo seletor baseado na estrutura da screenshot (.row-actions .c-right li.arrow-right a)
+            # A classe arrow-right geralmente indica o botão "próximo" neste template
+            candidatos = page.locator('.row-actions .c-right li.arrow-right a')
+            if candidatos.count() > 0:
+                botao_next = candidatos.first
+            
+            # 2. Fallback: procurar qualquer link dentro de um li.arrow-right
+            if not botao_next or botao_next.count() == 0:
+                candidatos = page.locator('li.arrow-right a')
+                if candidatos.count() > 0:
+                    botao_next = candidatos.last
+            
+            # 3. Fallback: procurar por ícone de seta (fa-angle-right ou similar)
+            if not botao_next or botao_next.count() == 0:
+                setas = page.locator('.pagination a:has(i.fa-angle-right), .pagination a:has(i.fa-chevron-right)')
+                if setas.count() > 0:
+                    botao_next = setas.last
+
+            # 4. Fallback: Tentar clicar no número da próxima página
+            if not botao_next or botao_next.count() == 0:
+                # Encontrar o item ativo
+                ativo = page.locator('.pagination li.active, .pagination li.current').first
+                if ativo.count() > 0:
+                    # Tentar o próximo irmão
+                    proximo = ativo.locator('xpath=following-sibling::li[1]/a')
+                    if proximo.count() > 0:
+                        botao_next = proximo.first
+
+            # Executar clique se encontrou
+            if botao_next and botao_next.count() > 0:
+                if botao_next.is_visible():
+                    print(f"   Navegando para página {pagina_atual + 1}...")
+                    url_antes = page.url
                     
-                    if 'disabled' not in classes.lower():
-                        # Clicar no link dentro do li
-                        link = botao_next_li.locator('a').first
-                        if link.count() > 0:
-                            print(f"   Navegando para página {pagina_atual + 1}...")
-                            link.click()
-                            page.wait_for_timeout(800)
-                            page.wait_for_selector('article', timeout=10000)
-                            pagina_atual += 1
-                            conseguiu_paginar = True
-                            
+                    # Forçar clique via JS se o elemento estiver coberto ou difícil de clicar
+                    try:
+                        botao_next.click(timeout=2000)
+                    except:
+                        page.evaluate('(element) => element.click()', botao_next.element_handle())
+                    
+                    page.wait_for_timeout(2000)
+                    
+                    # Verificar mudança
+                    if page.url != url_antes:
+                        pagina_atual += 1
+                        conseguiu_paginar = True
+                    else:
+                        # Se a URL não mudou, verificar se o conteúdo mudou (AJAX)
+                        # Esperar um pouco mais e verificar se novos artigos apareceram
+                        page.wait_for_timeout(1000)
+                        pagina_atual += 1 # Assumir que mudou se não houve erro, para tentar continuar
+                        conseguiu_paginar = True
+            
         except Exception as e:
-            print(f"   Erro ao tentar paginar: {str(e)[:50]}")
+            print(f"   Erro ao tentar paginar: {str(e)[:100]}")
         
         if not conseguiu_paginar:
-            # Não há mais páginas
+            print(f"   Fim da paginação na página {pagina_atual}")
             break
     
     print(f"   Total de {len(lotes_info)} lotes únicos coletados de {pagina_atual} página(s)")

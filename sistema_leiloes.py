@@ -317,7 +317,18 @@ class SistemaLeiloes:
                 horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
             )
 
-            for lote in lotes[:50]: # Mostrar apenas os primeiros 50 para performance no preview
+            # Função auxiliar para extrair número do lote para ordenação
+            def extrair_numero_lote(lote):
+                try:
+                    num_str = lote.get('numero_lote', '0').replace('LOTE', '').strip()
+                    return int(re.sub(r'\D', '', num_str)) if num_str else 0
+                except:
+                    return 0
+
+            # Ordenar lotes
+            lotes.sort(key=extrair_numero_lote)
+
+            for lote in lotes:
                 titulo_lote = self.limpar_titulo(lote, titulo)
                 valor = lote.get('valor_leilao', '') or lote.get('valor_minimo', '')
                 
@@ -345,15 +356,12 @@ class SistemaLeiloes:
                     )
                 )
 
-            if len(lotes) > 50:
-                aviso = ft.Text(f"... e mais {len(lotes) - 50} lotes.", italic=True, color=ft.Colors.GREY_500)
-            else:
-                aviso = ft.Container()
+            aviso = ft.Container()
 
             self.content_area.controls.extend([
                 header_detalhes,
                 ft.Divider(),
-                ft.Text("Pré-visualização (Primeiros 50 lotes):", weight=ft.FontWeight.BOLD),
+                ft.Text("Pré-visualização dos Lotes:", weight=ft.FontWeight.BOLD),
                 ft.Column([tabela, aviso], scroll=ft.ScrollMode.AUTO, expand=True)
             ])
             
@@ -441,6 +449,17 @@ class SistemaLeiloes:
             # Preparar dados para o HTML
             lotes_html = []
             lotes_originais = self.selected_leilao.get('lotes', [])
+            
+            # Ordenar lotes também para o relatório
+            def extrair_numero_lote(lote):
+                try:
+                    num_str = lote.get('numero_lote', '0').replace('LOTE', '').strip()
+                    return int(re.sub(r'\D', '', num_str)) if num_str else 0
+                except:
+                    return 0
+            
+            lotes_originais.sort(key=extrair_numero_lote)
+
             titulo_leilao = self.selected_leilao.get('leilao_titulo', 'Relatório de Leilão')
             
             for lote in lotes_originais:

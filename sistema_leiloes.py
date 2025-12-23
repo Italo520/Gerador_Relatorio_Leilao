@@ -21,6 +21,7 @@ class SistemaLeiloes:
         
         self.leiloes_data = []
         self.leiloes_online = []
+        self.avaliacoes = {} # Dicionário para armazenar avaliações manuais: {lote_url_ou_id: valor}
         self.selected_leilao = None
         self.scraper_running = False
         self.log_visible = False  # Controlar visibilidade do log
@@ -306,6 +307,7 @@ class SistemaLeiloes:
                 columns=[
                     ft.DataColumn(ft.Text("Lote")),
                     ft.DataColumn(ft.Text("Título")),
+                    ft.DataColumn(ft.Text("Avaliação")), # Nova coluna
                     ft.DataColumn(ft.Text("Valor")),
                     ft.DataColumn(ft.Text("Link")),
                 ],
@@ -324,6 +326,14 @@ class SistemaLeiloes:
                         cells=[
                             ft.DataCell(ft.Text(lote.get('numero_lote', '').replace('LOTE ', ''))),
                             ft.DataCell(ft.Text(titulo_lote, weight=ft.FontWeight.BOLD)),
+                            ft.DataCell(ft.TextField(
+                                value=self.avaliacoes.get(lote.get('url') or lote.get('numero_lote'), ''),
+                                width=100,
+                                height=30,
+                                text_size=12,
+                                content_padding=5,
+                                on_change=lambda e, l=lote: self.atualizar_avaliacao(e, l)
+                            )),
                             ft.DataCell(ft.Text(valor)),
                             ft.DataCell(ft.IconButton(
                                 icon=ft.Icons.OPEN_IN_NEW,
@@ -412,6 +422,13 @@ class SistemaLeiloes:
                 
         return titulo
 
+    def atualizar_avaliacao(self, e, lote):
+        """Atualiza o valor da avaliação no dicionário"""
+        chave = lote.get('url') or lote.get('numero_lote')
+        if chave:
+            self.avaliacoes[chave] = e.control.value
+
+
     def _gerar_conteudo_html(self):
         if not self.selected_leilao:
             return None, None
@@ -453,8 +470,10 @@ class SistemaLeiloes:
                     "descricao": lote.get('descricao', '') or "Sem descrição detalhada.",
                     "lances": 0, # Dado não disponível no JSON atual
                     "valorMinimo": valor_limpo,
+                    "avaliacao": self.avaliacoes.get(lote.get('url') or lote.get('numero_lote'), ''), # Incluir avaliação
                     "localizacao": "Paraíba", # Padrão
                     "imagem": lote.get('imagem_lote', ''),
+                    "comitente": lote.get('simbolo_lote', ''),
                     "retirado": False
                 })
 

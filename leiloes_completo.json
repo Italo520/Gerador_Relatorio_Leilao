@@ -116,5 +116,164 @@
                 "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29792/fiat-argo-drive-1-3-gsr-2018-2018"
             }
         ]
+    },
+    {
+        "leilao_titulo": "LEILÃO DE VEÍCULOS PARTICULARES",
+        "leilao_url": "https://www.leiloespb.com.br/eventos/leilao/leilao-de-veiculos-particulares/lote/29309/bmw-i8-2015-2015",
+        "comitente_logo": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-26-65b3e6610c844-65b3e6610c968.png",
+        "total_lotes": 1,
+        "lotes": [
+            {
+                "codigo_lote": "029309",
+                "numero_lote": "LOTE 1",
+                "titulo": "LEILÃO DE VEÍCULOS PARTICULARES",
+                "descricao": "Descrição\n\nPARTICULAR / LOTE: 1 / DATA: 19.12.2025\nBMW I8 - 2015/2015 \n\nCOR: CINZA\nSEM SINISTRO \nREGULARIZADA\nAPENAS 26725 KM RODADOS\nCONFIGURAÇÃO ORIGINAL\nPOSSUI CHAVE: SIM / POSSUI MANUAL: SIM\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$564.000",
+                "valor_leilao": "R$ 299.500,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-26-65b3e6610c844-65b3e6610c968.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/34620/arquivos/69384dace7ce0-69384dae1cd07.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-de-veiculos-particulares/lote/29309/bmw-i8-2015-2015"
+            }
+        ]
+    },
+    {
+        "leilao_titulo": "LEILÃO ZURICH SEGUROS",
+        "leilao_url": "https://www.leiloespb.com.br/eventos/leilao/1820/leilao-zurich-seguros",
+        "comitente_logo": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+        "total_lotes": 12,
+        "lotes": [
+            {
+                "codigo_lote": "029780",
+                "numero_lote": "LOTE 1",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 1 / DATA: 26.12.2025\nCITROEN / C4CACTUS FEEL - 2021/2022-\nOC:31.25.304181.01 /\nPEQUENA MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$76416",
+                "valor_leilao": "R$ 36.700,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/69308fa2e593c-69308fa32b189.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29780/lote"
+            },
+            {
+                "codigo_lote": "029781",
+                "numero_lote": "LOTE 2",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 2 / DATA: 26.12.2025\nRENAULT / RENAULT FLUENCE - 2011/2011-\nOC:31.25.303398.01 /\nPEQUENA MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$32954",
+                "valor_leilao": "R$ 14.200,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/33239/arquivos/6942a1850eefd-6942a18610b3d.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29781/lote"
+            },
+            {
+                "codigo_lote": "029782",
+                "numero_lote": "LOTE 3",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 3 / DATA: 26.12.2025\nHYUNDAI / HB20 1.0M - 2019/2019-\nOC:31.25.297552.01 /\nMEDIA MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$53274",
+                "valor_leilao": "R$ 25.600,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/32264/arquivos/6942a43825d4f-6942a43926e70.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29782/lote"
+            },
+            {
+                "codigo_lote": "029783",
+                "numero_lote": "LOTE 4",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 4 / DATA: 26.12.2025\n(SUCATA)CHEVROLET / PRISMA 1.4AT LTZ - 2015/-\nOC:31.25.259158.01 /\nGRANDE MONTA\nPOSSUI CHAVE: Não / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$53805",
+                "valor_leilao": "R$ 9.500,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/28021/arquivos/6871317304d80-687131733d63f.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29783/lote"
+            },
+            {
+                "codigo_lote": "029784",
+                "numero_lote": "LOTE 5",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 5 / DATA: 26.12.2025\n(SUCATA)CHERY / TIGGO2 1.5 AT ACT - 2018/-\nOC:31.25.305631.01 /\nGRANDE MONTA\nPOSSUI CHAVE: Não / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$57788",
+                "valor_leilao": "R$ 10.100,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/33517/arquivos/694584ad34d56-694584ad7da9a.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29784/lote"
+            },
+            {
+                "codigo_lote": "029785",
+                "numero_lote": "LOTE 6",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 6 / DATA: 26.12.2025\n(SUCATA)HONDA / FIT EX CVT - 2015/-\nOC:31.25.303028.01 /\nGRANDE MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$67932",
+                "valor_leilao": "R$ 11.800,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/69317a1af2029-69317a1b3910c.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29785/lote"
+            },
+            {
+                "codigo_lote": "029786",
+                "numero_lote": "LOTE 7",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 7 / DATA: 26.12.2025\nHONDA / WR - 2017/2018-\nOC:31.25.301465.01 /\nMEDIA MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$77763",
+                "valor_leilao": "R$ 35.400,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/693702da70146-693702daab482.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29786/lote"
+            },
+            {
+                "codigo_lote": "029787",
+                "numero_lote": "LOTE 8",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 8 / DATA: 26.12.2025\n(SUCATA)CHEVROLET / ONIX 10MT HB - 2024/2025-\nOC:31.25.270410.01 /\nGRANDE MONTA\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$73327",
+                "valor_leilao": "R$ 0,00",
+                "valor_minimo": "Sob Consulta",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29787/chevrolet-onix-hatch"
+            },
+            {
+                "codigo_lote": "029788",
+                "numero_lote": "LOTE 9",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 9 / DATA: 26.12.2025\nJEEP / RENEGADE SPORT AT - 2019/2020-\nOC:31.22.121126.01 /\nPEQUENA MONTA\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$76285\nCHASSI E MOTOR REMARCADO",
+                "valor_leilao": "R$ 0,00",
+                "valor_minimo": "Sob Consulta",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/17215/arquivos/68602a944dd68-68602a948c2c0.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29788/jeep-renegade"
+            },
+            {
+                "codigo_lote": "029789",
+                "numero_lote": "LOTE 10",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "Descrição\n\nZURICH / LOTE: 10 / DATA: 26.12.2025\nVOLKSWAGEM / NOVO VOYAGE 1.6 CITY - 2014/2014-\nOC:31.25.302638-01 /\nMEDIA MONTA\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$39119",
+                "valor_leilao": "R$ 0,00",
+                "valor_minimo": "Sob Consulta",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/33181/arquivos/694a9012142f8-694a9012a261a.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29789/vw-voyage-1-6-mi-t-flex-8v-4p"
+            },
+            {
+                "codigo_lote": "029831",
+                "numero_lote": "LOTE 11",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "",
+                "valor_leilao": "R$ 0,00",
+                "valor_minimo": "Sob Consulta",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29831/honda-civic-sedan-lx-2-0-16v-at"
+            },
+            {
+                "codigo_lote": "029832",
+                "numero_lote": "LOTE 12",
+                "titulo": "LEILÃO ZURICH SEGUROS",
+                "descricao": "",
+                "valor_leilao": "R$ 0,00",
+                "valor_minimo": "Sob Consulta",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-40-629638c8c4691-629638c8c4902.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29832/chevrolet-onix-hatch-prem-1-0-12v-at"
+            }
+        ]
     }
 ]

@@ -7,6 +7,7 @@ import threading
 from datetime import datetime
 import shutil
 from playwright.sync_api import sync_playwright
+import queue
 
 # Configurações
 ARQUIVO_JSON = 'leiloes_completo.json'
@@ -22,6 +23,9 @@ class SistemaLeiloes:
         self.leiloes_online = []
         self.selected_leilao = None
         self.scraper_running = False
+        self.log_visible = False  # Controlar visibilidade do log
+        self.log_queue = queue.Queue()  # Fila para mensagens de log thread-safe
+        self.log_timer = None  # Timer para atualizar log periodicamente
         
         self.build_ui()
         
@@ -81,6 +85,28 @@ class SistemaLeiloes:
         self.status_text = ft.Text("Pronto", size=12, color=ft.Colors.GREY_600)
         self.progress_bar = ft.ProgressBar(width=None, visible=False)
 
+        # Área de Log
+        self.log_text = ft.TextField(
+            value="",
+            multiline=True,
+            read_only=True,
+            min_lines=10,
+            max_lines=10,
+            text_size=11,
+            bgcolor=ft.Colors.BLACK,
+            color=ft.Colors.GREEN_300,
+            border_color=ft.Colors.GREY_700,
+            visible=False
+        )
+        
+        self.btn_toggle_log = ft.IconButton(
+            icon=ft.Icons.TERMINAL,
+            icon_color=ft.Colors.GREY_600,
+            tooltip="Mostrar/Ocultar Log",
+            on_click=self.toggle_log,
+            visible=False
+        )
+
         self.lista_leiloes = ft.ListView(
             expand=True,
             spacing=10,
@@ -94,7 +120,11 @@ class SistemaLeiloes:
                     ft.Row([self.input_url, self.btn_importar], spacing=5),
                     
                     self.progress_bar,
-                    self.status_text,
+                    ft.Row([
+                        self.status_text,
+                        self.btn_toggle_log,
+                    ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
+                    self.log_text,
                     
                     ft.Divider(height=10),
                     ft.Text("Leilões Baixados", weight=ft.FontWeight.BOLD),
@@ -191,13 +221,21 @@ class SistemaLeiloes:
                 on_click=lambda e, u=url: self.baixar_leilao(u)
             )
 
+            # Botão de Excluir
+            btn_excluir = ft.IconButton(
+                icon=ft.Icons.DELETE_OUTLINE,
+                icon_color=ft.Colors.RED_400,
+                tooltip="Excluir este leilão",
+                on_click=lambda e, u=url: self.excluir_leilao(u)
+            )
+
             card_content = ft.Row([
                 icon,
                 ft.Column([
-                    ft.Text(titulo, weight=ft.FontWeight.BOLD, size=13, width=160, no_wrap=False, max_lines=2, overflow=ft.TextOverflow.ELLIPSIS),
+                    ft.Text(titulo, weight=ft.FontWeight.BOLD, size=13, width=130, no_wrap=False, max_lines=2, overflow=ft.TextOverflow.ELLIPSIS),
                     ft.Text(sub_text, size=11, color=ft.Colors.GREY_600)
                 ], expand=True, spacing=2),
-                btn_baixar
+                ft.Row([btn_baixar, btn_excluir], spacing=0)
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
 
             card = ft.Container(
@@ -224,104 +262,138 @@ class SistemaLeiloes:
         self.atualizar_lista_leiloes() # Para atualizar o destaque
         self.mostrar_detalhes_leilao()
 
-    def mostrar_detalhes_leilao(self):
-        self.content_area.controls.clear()
-        
+    def _gerar_conteudo_html(self):
         if not self.selected_leilao:
-            self.content_area.controls.append(ft.Text("Selecione um leilão para ver os detalhes."))
-            self.page.update()
-            return
+            return None, None
 
-        lotes = self.selected_leilao.get('lotes', [])
-        titulo = self.selected_leilao.get('leilao_titulo', 'Leilão')
-        
-        # Header dos Detalhes
-        header_detalhes = ft.Row(
-            [
-                ft.Column([
-                    ft.Text(titulo, size=20, weight=ft.FontWeight.BOLD),
-                    ft.Text(f"Total de Lotes: {len(lotes)}", color=ft.Colors.GREY_700),
-                ], expand=True),
-                ft.ElevatedButton(
-                    "Gerar Relatório HTML",
-                    icon=ft.Icons.DESCRIPTION,
-                    style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600, color=ft.Colors.WHITE),
-                    on_click=self.gerar_relatorio_html
-                ),
-                ft.ElevatedButton(
-                    "Gerar PDF",
-                    icon=ft.Icons.PICTURE_AS_PDF,
-                    style=ft.ButtonStyle(bgcolor=ft.Colors.RED_600, color=ft.Colors.WHITE),
-                    on_click=self.iniciar_geracao_pdf
-                )
-            ],
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN
-        )
-        
-        # Tabela de Preview
-        tabela = ft.DataTable(
-            columns=[
-                ft.DataColumn(ft.Text("Lote")),
-                ft.DataColumn(ft.Text("Título/Descrição")),
-                ft.DataColumn(ft.Text("Valor")),
-                ft.DataColumn(ft.Text("Link")),
-            ],
-            rows=[],
-            border=ft.border.all(1, ft.Colors.GREY_200),
-            vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
-            horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
-        )
-
-        for lote in lotes[:50]: # Mostrar apenas os primeiros 50 para performance no preview
-            titulo_lote = self.limpar_titulo(lote, titulo)
-            valor = lote.get('valor_leilao', '') or lote.get('valor_minimo', '')
+    def mostrar_detalhes_leilao(self):
+        try:
+            self.content_area.controls.clear()
             
-            tabela.rows.append(
-                ft.DataRow(
-                    cells=[
-                        ft.DataCell(ft.Text(lote.get('numero_lote', '').replace('LOTE ', ''))),
-                        ft.DataCell(ft.Column([
-                            ft.Text(titulo_lote, weight=ft.FontWeight.BOLD, size=12),
-                            ft.Text(lote.get('descricao', '')[:50] + "...", size=10, color=ft.Colors.GREY_600)
-                        ], spacing=2)),
-                        ft.DataCell(ft.Text(valor)),
-                        ft.DataCell(ft.IconButton(
-                            icon=ft.Icons.LINK, 
-                            url=lote.get('url'), 
-                            tooltip="Abrir no navegador"
-                        )),
-                    ]
-                )
+            if not self.selected_leilao:
+                self.content_area.controls.append(ft.Text("Selecione um leilão para ver os detalhes."))
+                self.page.update()
+                return
+
+            lotes = self.selected_leilao.get('lotes', [])
+            titulo = self.selected_leilao.get('leilao_titulo', 'Leilão')
+            
+            # Header dos Detalhes
+            header_detalhes = ft.Row(
+                [
+                    ft.Column([
+                        ft.Text(titulo, size=20, weight=ft.FontWeight.BOLD),
+                        ft.Text(f"Total de Lotes: {len(lotes)}", color=ft.Colors.GREY_700),
+                    ], expand=True),
+                    ft.ElevatedButton(
+                        "Gerar Relatório HTML",
+                        icon=ft.Icons.DESCRIPTION,
+                        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600, color=ft.Colors.WHITE),
+                        on_click=self.gerar_relatorio_html
+                    ),
+                    ft.ElevatedButton(
+                        "Gerar PDF",
+                        icon=ft.Icons.PICTURE_AS_PDF,
+                        style=ft.ButtonStyle(bgcolor=ft.Colors.RED_600, color=ft.Colors.WHITE),
+                        on_click=self.iniciar_geracao_pdf
+                    )
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN
+            )
+            
+            # Tabela de Preview
+            tabela = ft.DataTable(
+                columns=[
+                    ft.DataColumn(ft.Text("Lote")),
+                    ft.DataColumn(ft.Text("Título")),
+                    ft.DataColumn(ft.Text("Valor")),
+                    ft.DataColumn(ft.Text("Link")),
+                ],
+                rows=[],
+                border=ft.border.all(1, ft.Colors.GREY_200),
+                vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
+                horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
             )
 
-        if len(lotes) > 50:
-            aviso = ft.Text(f"... e mais {len(lotes) - 50} lotes.", italic=True, color=ft.Colors.GREY_500)
-        else:
-            aviso = ft.Container()
+            for lote in lotes[:50]: # Mostrar apenas os primeiros 50 para performance no preview
+                titulo_lote = self.limpar_titulo(lote, titulo)
+                valor = lote.get('valor_leilao', '') or lote.get('valor_minimo', '')
+                
+                tabela.rows.append(
+                    ft.DataRow(
+                        cells=[
+                            ft.DataCell(ft.Text(lote.get('numero_lote', '').replace('LOTE ', ''))),
+                            ft.DataCell(ft.Text(titulo_lote, weight=ft.FontWeight.BOLD)),
+                            ft.DataCell(ft.Text(valor)),
+                            ft.DataCell(ft.IconButton(
+                                icon=ft.Icons.OPEN_IN_NEW,
+                                tooltip="Abrir no navegador",
+                                url=lote.get('url'),
+                                icon_size=20
+                            )),
+                        ]
+                    )
+                )
 
-        self.content_area.controls.extend([
-            header_detalhes,
-            ft.Divider(),
-            ft.Text("Pré-visualização (Primeiros 50 lotes):", weight=ft.FontWeight.BOLD),
-            ft.Column([tabela, aviso], scroll=ft.ScrollMode.AUTO, expand=True)
-        ])
-        
-        self.page.update()
+            if len(lotes) > 50:
+                aviso = ft.Text(f"... e mais {len(lotes) - 50} lotes.", italic=True, color=ft.Colors.GREY_500)
+            else:
+                aviso = ft.Container()
+
+            self.content_area.controls.extend([
+                header_detalhes,
+                ft.Divider(),
+                ft.Text("Pré-visualização (Primeiros 50 lotes):", weight=ft.FontWeight.BOLD),
+                ft.Column([tabela, aviso], scroll=ft.ScrollMode.AUTO, expand=True)
+            ])
+            
+            self.page.update()
+            
+        except Exception as e:
+            print(f"Erro ao mostrar detalhes: {e}")
+            self.content_area.controls.append(ft.Text(f"Erro ao carregar detalhes: {e}", color=ft.Colors.RED))
+            self.page.update()
 
     def limpar_titulo(self, lote, titulo_leilao):
         """Melhora o título do lote se ele for igual ao do leilão"""
         titulo = lote.get('titulo', '')
+        num_str = lote.get('numero_lote', '').replace('LOTE', '').strip()
+        
         # Se o título do lote for genérico ou igual ao do leilão, tenta extrair da URL ou descrição
         if not titulo or titulo == titulo_leilao or titulo == "Título não encontrado" or titulo == "LOTE":
-            # Tenta extrair da descrição (segunda linha geralmente é o veículo)
+            # Tenta extrair da descrição
             descricao = lote.get('descricao', '')
             if descricao:
-                linhas = descricao.split('\n')
-                if len(linhas) > 1:
-                    candidato = linhas[1].strip()
-                    if candidato:
-                        return candidato
-            
+                linhas = [l.strip() for l in descricao.split('\n') if l.strip()]
+                
+                # Palavras-chave para ignorar no início das linhas
+                ignorar = [
+                    "DESCRIÇÃO", "AVALIAÇÃO", "LEILOEIRO", "COMITENTE", "CÓDIGO LEILÃO", 
+                    "CÓDIGO LOTE", "NÚMERO LOTE", "HABILITADOS", "TIPO", "RECEBIMENTO DE LANCES",
+                    "LOCALIZAÇÃO", "VISITAÇÃO", "PAGAMENTO", "RETIRADA"
+                ]
+                
+                for linha in linhas:
+                    linha_upper = linha.upper()
+                    # Se a linha for apenas uma palavra-chave, ignora
+                    if any(linha_upper == kw or linha_upper.startswith(f"{kw}:") for kw in ignorar):
+                        continue
+
+                    # Se a linha contiver "LOTE:" e "DATA:", ignora (cabeçalho padrão)
+                    if "LOTE:" in linha_upper and "DATA:" in linha_upper:
+                        continue
+                    
+                    # Se a linha for um valor monetário isolado, ignora
+                    if re.match(r'^R\$\s?[\d\.,]+$', linha):
+                        continue
+                        
+                    # Se a linha for muito curta (menos de 3 chars) e não for alfanumérica, ignora
+                    if len(linha) < 3:
+                        continue
+                        
+                    # Achamos um candidato!
+                    return linha
+
             # Fallback para URL
             url = lote.get('url', '')
             if url:
@@ -333,6 +405,11 @@ class SistemaLeiloes:
                     return slug_limpo
                 except:
                     pass
+                    
+            # Se tudo falhar, retorna LOTE X
+            if num_str:
+                return f"LOTE {num_str}"
+                
         return titulo
 
     def _gerar_conteudo_html(self):
@@ -356,12 +433,23 @@ class SistemaLeiloes:
                 if not valor_limpo:
                     valor_limpo = "0,00"
 
-                # Extrair número
-                num_str = lote.get('numero_lote', '0').upper().replace('LOTE', '').strip()
+                # Extrair número (manter "LOTE" se existir, ou adicionar se for apenas número)
+                raw_num = lote.get('numero_lote', '0').upper().strip()
+                if "LOTE" not in raw_num:
+                    num_str = f"LOTE {raw_num}"
+                else:
+                    num_str = raw_num
                 
+                # Extrair apenas o número para a bolinha
+                apenas_numero = num_str.replace('LOTE', '').strip()
+                
+                titulo_limpo = self.limpar_titulo(lote, titulo_leilao)
+                if titulo_limpo.upper() == "LOTE" or not titulo_limpo.strip():
+                    titulo_limpo = num_str # Já é "LOTE X"
+
                 lotes_html.append({
-                    "numero": num_str,
-                    "titulo": self.limpar_titulo(lote, titulo_leilao),
+                    "numero": apenas_numero,
+                    "titulo": titulo_limpo,
                     "descricao": lote.get('descricao', '') or "Sem descrição detalhada.",
                     "lances": 0, # Dado não disponível no JSON atual
                     "valorMinimo": valor_limpo,
@@ -418,6 +506,23 @@ class SistemaLeiloes:
                     'https://via.placeholder.com/30x30?text=C', 
                     logo_url
                 )
+
+            # 5.1. Substituir Logo do LeiloesPB no cabeçalho
+            try:
+                logo_leiloespb_path = 'logo_leiloespb'
+                if os.path.exists(logo_leiloespb_path):
+                    import base64
+                    with open(logo_leiloespb_path, 'rb') as img_file:
+                        logo_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+                        # Detectar tipo de imagem (assumindo PNG por padrão)
+                        logo_data_uri = f'data:image/png;base64,{logo_base64}'
+                        # Substituir a URL da logo do LeiloesPB
+                        html_content = html_content.replace(
+                            'https://www.leiloespb.com.br/client/logo.png?v=2',
+                            logo_data_uri
+                        )
+            except Exception as e:
+                print(f"Aviso: Não foi possível carregar logo_leiloespb: {e}")
 
             # 6. Substituir Imagens dos Lotes (feito via JS no template, mas precisamos garantir que o JS use o campo 'imagem')
             # O template atual usa: <img src="https://via.placeholder.com/100x75?text=Foto" ... />
@@ -509,6 +614,28 @@ class SistemaLeiloes:
         self.input_url.value = ""
         self.page.update()
 
+    def excluir_leilao(self, url):
+        """Remove um leilão da lista e do arquivo JSON"""
+        # Encontrar e remover da lista em memória
+        self.leiloes_data = [l for l in self.leiloes_data if l.get('leilao_url') != url]
+        
+        # Salvar no arquivo JSON
+        try:
+            with open(ARQUIVO_JSON, 'w', encoding='utf-8') as f:
+                json.dump(self.leiloes_data, f, ensure_ascii=False, indent=4)
+            
+            self.mostrar_mensagem("Leilão removido com sucesso!")
+            
+            # Se o leilão removido era o selecionado, limpar seleção
+            if self.selected_leilao and self.selected_leilao.get('leilao_url') == url:
+                self.selected_leilao = None
+                self.main_container.content = ft.Text("Selecione um leilão para visualizar os detalhes.", size=16, color=ft.Colors.GREY_500)
+            
+            self.atualizar_lista_leiloes()
+            
+        except Exception as e:
+            self.mostrar_mensagem(f"Erro ao salvar alterações: {e}", erro=True)
+
     def baixar_leilao(self, url):
         if self.scraper_running:
             self.mostrar_mensagem("Aguarde o processo atual terminar.", erro=True)
@@ -520,28 +647,52 @@ class SistemaLeiloes:
         self.btn_importar.disabled = True
         self.progress_bar.visible = True
         self.status_text.value = msg
+        
+        # Limpar e mostrar log
+        self.limpar_log()
+        self.log_visible = True
+        self.log_text.visible = True
+        self.btn_toggle_log.visible = True
+        
+        # Iniciar processamento da fila de log
+        self.processar_fila_log()
+        
         self.page.update()
 
         thread = threading.Thread(target=self._executar_scraper_thread, args=(args,))
         thread.start()
 
     def _executar_scraper_thread(self, args):
+        mensagens_log = []
         try:
             # Executa o script python com argumentos
             cmd = ['python', ARQUIVO_SCRAPER] + args
-            process = subprocess.run(
+            
+            # Usar Popen para capturar saída em tempo real
+            process = subprocess.Popen(
                 cmd,
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
                 text=True,
                 encoding='utf-8',
-                errors='replace'
+                errors='replace',
+                bufsize=1,
+                universal_newlines=True
             )
+            
+            # Ler saída linha por linha e coletar
+            for line in process.stdout:
+                if line.strip():
+                    mensagens_log.append(line.strip())
+                    # Adicionar à fila para exibição
+                    self.log_queue.put(line.strip())
+            
+            process.wait()
             
             if process.returncode == 0:
                 self._scraper_concluido(sucesso=True)
             else:
-                erro_msg = process.stderr
-                self._scraper_concluido(sucesso=False, msg=erro_msg)
+                self._scraper_concluido(sucesso=False, msg="Erro ao executar scraper")
                 
         except Exception as e:
             self._scraper_concluido(sucesso=False, msg=str(e))
@@ -550,6 +701,24 @@ class SistemaLeiloes:
         self.scraper_running = False
         self.btn_importar.disabled = False
         self.progress_bar.visible = False
+        
+        # Cancelar timer se ainda estiver rodando
+        if self.log_timer:
+            try:
+                self.log_timer.cancel()
+            except:
+                pass
+        
+        # Processar mensagens finais da fila
+        try:
+            while not self.log_queue.empty():
+                msg_log = self.log_queue.get_nowait()  
+                timestamp = datetime.now().strftime("%H:%M:%S")
+                linhas = self.log_text.value.split('\n') if self.log_text.value else []
+                linhas.append(f"[{timestamp}] {msg_log}")
+                self.log_text.value = '\n'.join(linhas[-500:])
+        except:
+            pass
         
         if sucesso:
             self.status_text.value = "Dados atualizados com sucesso!"
@@ -561,6 +730,7 @@ class SistemaLeiloes:
         
         self.page.update()
 
+
     def mostrar_mensagem(self, texto, erro=False):
         snack = ft.SnackBar(
             content=ft.Text(texto),
@@ -569,6 +739,58 @@ class SistemaLeiloes:
         self.page.overlay.append(snack)
         snack.open = True
         self.page.update()
+
+    def toggle_log(self, e):
+        """Alterna a visibilidade do log"""
+        self.log_visible = not self.log_visible
+        self.log_text.visible = self.log_visible
+        self.page.update()
+
+    def adicionar_log(self, mensagem):
+        """Adiciona uma mensagem ao log (thread-safe)"""
+        try:
+            # Colocar mensagem na fila
+            self.log_queue.put(mensagem)
+        except:
+            pass
+    
+    def processar_fila_log(self):
+        """Processa mensagens da fila e atualiza o log (executado na thread principal)"""
+        try:
+            mensagens_novas = []
+            # Pegar todas as mensagens disponíveis
+            while not self.log_queue.empty():
+                try:
+                    msg = self.log_queue.get_nowait()
+                    timestamp = datetime.now().strftime("%H:%M:%S")
+                    mensagens_novas.append(f"[{timestamp}] {msg}")
+                except queue.Empty:
+                    break
+            
+            if mensagens_novas:
+                # Adicionar ao log existente
+                linhas_atuais = self.log_text.value.split('\n') if self.log_text.value else []
+                linhas_atuais.extend(mensagens_novas)
+                
+                # Manter últimas 500 linhas
+                if len(linhas_atuais) > 500:
+                    linhas_atuais = linhas_atuais[-500:]
+                
+                self.log_text.value = '\n'.join(linhas_atuais)
+                self.page.update()
+            
+            # Continuar processando se scraper ainda está rodando
+            if self.scraper_running:
+                self.log_timer = threading.Timer(0.5, self.processar_fila_log)
+                self.log_timer.start()
+        except Exception as e:
+            print(f"Erro ao processar log: {e}")
+
+    def limpar_log(self):
+        """Limpa o conteúdo do log"""
+        self.log_text.value = ""
+        self.page.update()
+
 
 def main(page: ft.Page):
     app = SistemaLeiloes(page)

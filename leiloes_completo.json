@@ -1,80 +1,120 @@
 [
-  {
-    "leilao_titulo": "LEILÃO ZURICH SEGUROS",
-    "leilao_url": "https://www.leiloespb.com.br/eventos/leilao/1816/leilao-zurich-seguros",
-    "comitente_logo": "https://static.suporteleiloes.com.br/leiloespbcombr/leiloes/1816/sl-leilao-1816-69444e1e52bb2-69444e1e5394e.jpg",
-    "total_lotes": 7,
-    "lotes": [
-      {
-        "codigo_lote": "029669",
-        "numero_lote": "LOTE 1",
-        "titulo": "LEILÃO ZURICH SEGUROS",
-        "descricao": "ZURICH / LOTE: 1 / DATA: 19.12.2025\nCITROEN / C4CACTUS FEEL - 2021/2022-ALCOOL/GASOLINA\nOC:31.25.304181.01 /\nPEQUENA MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$76416",
-        "valor_leilao": "R$ 36.700,00",
-        "valor_minimo": "",
-        "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/69308fa2e593c-69308fa32b189.jpg",
-        "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29669/lote"
-      },
-      {
-        "codigo_lote": "029670",
-        "numero_lote": "LOTE 2",
-        "titulo": "LEILÃO ZURICH SEGUROS",
-        "descricao": "ZURICH / LOTE: 2 / DATA: 19.12.2025\nRENAULT / RENAULT FLUENCE - 2011/2011-ALCOOL/GASOLINA\nOC:31.25.303398.01 /\nPEQUENA MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$32954",
-        "valor_leilao": "R$ 14.200,00",
-        "valor_minimo": "",
-        "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/33239/arquivos/6942a1850eefd-6942a18610b3d.jpg",
-        "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29670/lote"
-      },
-      {
-        "codigo_lote": "029671",
-        "numero_lote": "LOTE 3",
-        "titulo": "LEILÃO ZURICH SEGUROS",
-        "descricao": "ZURICH / LOTE: 3 / DATA: 19.12.2025\nHYUNDAI / HB20 1.0M - 2019/2019-ALCOOL/GASOLINA\nOC:31.25.297552.01 /\nMEDIA MONTA\nPOSSUI CHAVE: SIM / POSSUI MANUAL: Não\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$53274",
-        "valor_leilao": "R$ 25.600,00",
-        "valor_minimo": "",
-        "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/32264/arquivos/6942a43825d4f-6942a43926e70.jpg",
-        "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29671/lote"
-      },
-      {
-        "codigo_lote": "029672",
-        "numero_lote": "LOTE 4",
-        "titulo": "LEILÃO ZURICH SEGUROS",
-        "descricao": "ZURICH / LOTE: 4 / DATA: 19.12.2025\n(SUCATA)CHEVROLET / PRISMA 1.4AT LTZ - 2015/-\nOC:31.25.259158.01 /\nGRANDE MONTA\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$53805",
-        "valor_leilao": "R$ 9.500,00",
-        "valor_minimo": "",
-        "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/28021/arquivos/6871317304d80-687131733d63f.jpg",
-        "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29672/chevrolet-prisma-1-4at-ltz-2015-2015"
-      },
-      {
-        "codigo_lote": "029673",
-        "numero_lote": "LOTE 5",
-        "titulo": "LEILÃO ZURICH SEGUROS",
-        "descricao": "ZURICH / LOTE: 5 / DATA: 19.12.2025\n(SUCATA)CHERY / TIGGO2 1.5 AT ACT - 2018/-\nOC:31.25.305631.01 /\nGRANDE MONTA\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$57788",
-        "valor_leilao": "R$ 10.100,00",
-        "valor_minimo": "",
-        "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/33517/arquivos/69446bac7468b-69446bac8e0f7.jpg",
-        "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29673/chery-tiggo-2-act-1-5-16v-at-flex"
-      },
-      {
-        "codigo_lote": "029674",
-        "numero_lote": "LOTE 6",
-        "titulo": "LEILÃO ZURICH SEGUROS",
-        "descricao": "ZURICH / LOTE: 6 / DATA: 19.12.2025\n(SUCATA)HONDA / FIT EX CVT - 2015/-\nOC:31.25.303028.01 /\nGRANDE MONTA\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$67932",
-        "valor_leilao": "R$ 11.800,00",
-        "valor_minimo": "",
-        "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/69317a1af2029-69317a1b3910c.jpg",
-        "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29674/honda-fit-ex-1-5-16v-4p-aut"
-      },
-      {
-        "codigo_lote": "029675",
-        "numero_lote": "LOTE 7",
-        "titulo": "LEILÃO ZURICH SEGUROS",
-        "descricao": "ZURICH / LOTE: 7 / DATA: 19.12.2025\nHONDA / WR - 2017/2018-ALCOOL/GASOLINA\nOC:31.25.301465.01 /\nMEDIA MONTA\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$77763",
-        "valor_leilao": "R$ 35.400,00",
-        "valor_minimo": "",
-        "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/693702da70146-693702daab482.jpg",
-        "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-zurich-seguros/lote/29675/honda-wrv"
-      }
-    ]
-  }
+    {
+        "leilao_titulo": "LEILÃO BANCO SAFRA",
+        "leilao_url": "https://www.leiloespb.com.br/eventos/leilao/1819/leilao-banco-safra",
+        "comitente_logo": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+        "total_lotes": 10,
+        "lotes": [
+            {
+                "codigo_lote": "029773",
+                "numero_lote": "LOTE 1",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 1 / DATA: 26.12.2025\nFORD/RANGER XLS CD4M32 - 2015/2015 | DIESEL\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$97600",
+                "valor_leilao": "R$ 66.500,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/31775/arquivos/69331af38099b-69331af3b88d5.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29773/lote"
+            },
+            {
+                "codigo_lote": "029774",
+                "numero_lote": "LOTE 2",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 2 / DATA: 26.12.2025\nCHEV/ONIX 10MT LT1 - 2020/2020 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$54600",
+                "valor_leilao": "R$ 37.800,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/6925b1158601d-6925b11599392.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29774/lote"
+            },
+            {
+                "codigo_lote": "029775",
+                "numero_lote": "LOTE 3",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 3 / DATA: 26.12.2025\nFORD ECOSPORT FSL 1.6 - 2015/2015 | GASOLINA/ALCOOL/GAS NATURAL\nOC: /\n\nPOSSUI CHAVE: NÃO / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$55800",
+                "valor_leilao": "R$ 30.800,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68d2e9ca29cf5-68d2e9cad1007.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29775/lote"
+            },
+            {
+                "codigo_lote": "029776",
+                "numero_lote": "LOTE 4",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 4 / DATA: 26.12.2025\nCITROEN/C3 TENDANCE BVA - 2014/2015 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$42100",
+                "valor_leilao": "R$ 24.700,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68ecfe80117f5-68ecfe812f395.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29776/lote"
+            },
+            {
+                "codigo_lote": "029777",
+                "numero_lote": "LOTE 5",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 5 / DATA: 26.12.2025\nVW/GOL 1.0L MC4 - 2021/2022\nOC: /\n\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$51500",
+                "valor_leilao": "R$ 36.100,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68d2c8c1ae1cf-68d2c8c1ebf86.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29777/volkswagen-gol"
+            },
+            {
+                "codigo_lote": "029778",
+                "numero_lote": "LOTE 6",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 6 / DATA: 26.12.2025\nFORD/KA SE 1.0 HA C - 2019/2019\nOC: /\n\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$46000",
+                "valor_leilao": "R$ 30.700,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68f92d3a747cd-68f92d3ab3346.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29778/ford-qqg2g03"
+            },
+            {
+                "codigo_lote": "029779",
+                "numero_lote": "LOTE 7",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 7 / DATA: 26.12.2025\nFORD/KA SE 1.0 SD C - 2020/2020\nOC: /\n\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$47600",
+                "valor_leilao": "R$ 31.800,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/6928a27f6e974-6928a27fdae8a.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29779/ford-ka"
+            },
+            {
+                "codigo_lote": "029790",
+                "numero_lote": "LOTE 8",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 8 / DATA: 26.12.2025\nFORD/KA SE 1.0 HA C - 2020/2021 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$48500",
+                "valor_leilao": "R$ 33.400,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68a7366993896-68a73669cd0c0.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29790/ford-ka-se-1-0-ha-c-2020-2021"
+            },
+            {
+                "codigo_lote": "029791",
+                "numero_lote": "LOTE 9",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 9 / DATA: 26.12.2025\nCITROEN/C3 AIRC TENDAN A - 2015/2015 | ALCOOL/GASOLINA\nOC: /\nSINISTRADO/RECUPERADO\nPOSSUI CHAVE: NÃO / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$41800",
+                "valor_leilao": "R$ 20.500,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68e95ab34403c-68e95ab383442.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29791/citroen-c3-airc-tendan-a-2015-2015-alcool-gasolina"
+            },
+            {
+                "codigo_lote": "029792",
+                "numero_lote": "LOTE 10",
+                "titulo": "LEILÃO BANCO SAFRA",
+                "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 10 / DATA: 26.12.2025\nFIAT/ARGO DRIVE 1.3 GSR - 2018/2018 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$51900",
+                "valor_leilao": "R$ 40.500,00",
+                "valor_minimo": "",
+                "simbolo_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png",
+                "imagem_lote": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/29749/arquivos/68790de1d38ad-68790de216cfa.jpg",
+                "url": "https://www.leiloespb.com.br/eventos/leilao/leilao-banco-safra/lote/29792/fiat-argo-drive-1-3-gsr-2018-2018"
+            }
+        ]
+    }
 ]

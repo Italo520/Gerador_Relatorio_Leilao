@@ -12,22 +12,171 @@ if sys.platform == "win32":
 
 BASE_URL = "https://www.leiloespb.com.br"
 
+def extrair_dados_lote_individual(page, lote_url):
+    """
+    Extrai dados de um lote individual quando já estamos na página dele.
+    Usado para leilões com apenas 1 lote que redirecionam diretamente.
+    """
+    try:
+        page.wait_for_timeout(500)
+        
+        # Extrair título do lote
+        titulo = "Título não encontrado"
+        try:
+            titulo_locator = page.locator('h2').first
+            if titulo_locator.count() > 0:
+                titulo = titulo_locator.inner_text(timeout=3000).strip()
+            else:
+                titulo_locator = page.locator('h1').first
+                if titulo_locator.count() > 0:
+                    titulo = titulo_locator.inner_text(timeout=3000).strip()
+        except:
+            titulo = lote_url.split('/')[-1].replace('-', ' ').title()
+        
+        # Extrair descrição - XPath específico para lote único
+        descricao = "Descrição não disponível"
+        try:
+            # Tentativa 1: XPath completo fornecido pelo usuário
+            desc_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[6]')
+            if desc_locator.count() > 0:
+                descricao = desc_locator.inner_text(timeout=3000).strip()
+            else:
+                # Tentativa 2: XPath do parágrafo específico
+                desc_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[6]/p')
+                if desc_locator.count() > 0:
+                    descricao = desc_locator.inner_text(timeout=3000).strip()
+                else:
+                    # Tentativa 3: Fallback genérico
+                    desc_heading = page.locator('text="Descrição"').first
+                    if desc_heading.count() > 0:
+                        desc_container = desc_heading.locator('xpath=..').locator('xpath=following-sibling::*').first
+                        if desc_container.count() > 0:
+                            descricao = desc_container.inner_text(timeout=3000).strip()
+        except:
+            pass
+        
+        # Extrair valor mínimo de venda
+        valor_minimo = "Sob Consulta"
+        try:
+            valor_locator = page.locator('text="Valor mínimo de venda"').locator('xpath=following-sibling::*').first
+            if valor_locator.count() > 0:
+                valor_minimo = valor_locator.inner_text(timeout=3000).strip()
+        except:
+            pass
+        
+        # Extrair valor do leilão
+        valor_leilao = "Não informado"
+        try:
+            leilao_valor = page.locator('text=/Leilão Único|1º Leilão/').locator('xpath=following::*[contains(text(), "R$")]').first
+            if leilao_valor.count() > 0:
+                valor_leilao = leilao_valor.inner_text(timeout=3000).strip()
+        except:
+            pass
+        
+        # Extrair código do lote
+        codigo_lote = "N/A"
+        try:
+            codigo_locator = page.locator('text="Código Lote"').locator('xpath=following-sibling::*').first
+            if codigo_locator.count() > 0:
+                codigo_lote = codigo_locator.inner_text(timeout=3000).strip()
+        except:
+            pass
+        
+        # Extrair número do lote
+        numero_lote = "N/A"
+        try:
+            numero_locator = page.locator('text="Número Lote"').locator('xpath=following-sibling::*').first
+            if numero_locator.count() > 0:
+                numero_lote = numero_locator.inner_text(timeout=3000).strip()
+        except:
+            pass
+        
+        # Extrair símbolo/logo do lote - XPath específico para lote único
+        simbolo_lote = ""
+        try:
+            # XPath específico fornecido pelo usuário para o símbolo
+            simbolo_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[5]/ul[1]/li[2]/div[1]/img')
+            if simbolo_locator.count() > 0:
+                src = simbolo_locator.get_attribute('src')
+                if src:
+                    simbolo_lote = src if src.startswith('http') else BASE_URL + src
+        except:
+            pass
+        
+        # Extrair imagem do lote (foto principal)
+        imagem_lote = ""
+        try:
+            # Tentar vários seletores
+            seletores_imagem = [
+                'xpath=/html/body/section[4]/div/div[2]/div/div[1]/div/div[2]/div[1]/div/div/div[2]/div/div/a/img',
+                '.product-gallery-preview img',
+                'div.image-container img',
+                '.gallery img',
+                '.product-image img',
+                'img[alt*="lote"]',
+                'img[alt*="veículo"]',
+                'img[alt*="veiculo"]',
+                'section img',
+                'main img'
+            ]
+            
+            for seletor in seletores_imagem:
+                img_locator = page.locator(seletor).first
+                if img_locator.count() > 0:
+                    src = img_locator.get_attribute('src')
+                    if src and 'placeholder' not in src.lower():
+                        imagem_lote = src if src.startswith('http') else BASE_URL + src
+                        break
+        except:
+            pass
+        
+        return {
+            "codigo_lote": codigo_lote,
+            "numero_lote": numero_lote,
+            "titulo": titulo,
+            "descricao": descricao,
+            "valor_leilao": valor_leilao,
+            "valor_minimo": valor_minimo,
+            "simbolo_lote": simbolo_lote,
+            "imagem_lote": imagem_lote,
+            "url": lote_url
+        }
+    except Exception as e:
+        print(f"   Erro ao extrair lote individual: {str(e)[:50]}")
+        return None
+
 def extrair_lotes_de_leilao(page):
     """
     Extrai informações de todos os lotes de um leilão específico.
     """
     lotes_data = []
     
+    # Verificar se foi redirecionado direto para página de lote (leilão com 1 único lote)
+    url_atual = page.url
+    comitente_logo_encontrado = ""  # Variável para armazenar a logo do comitente
+    
+    if '/lote/' in url_atual and url_atual.count('/') >= 7:
+        print("   Leilão com lote único detectado (redirecionamento direto)")
+        # Extrair dados deste único lote
+        lote_info = extrair_dados_lote_individual(page, url_atual)
+        if lote_info:
+            lotes_data.append(lote_info)
+            # A logo do comitente está no mesmo lugar que o símbolo do lote
+            comitente_logo_encontrado = lote_info.get('simbolo_lote', '')
+            print(f"   ✓ 1 lote coletado")
+        return lotes_data, comitente_logo_encontrado
+    
     # Aguardar um seletor específico ao invés de networkidle
     try:
         page.wait_for_selector('article', timeout=10000)
     except:
         print("   ⚠ Nenhum lote encontrado nesta página")
-        return lotes_data
+        return lotes_data, comitente_logo_encontrado
     
     # Coletar URLs e imagens de todas as páginas
     lotes_info = {}  # {url: imagem}
     pagina_atual = 1
+    paginas_vazias_consecutivas = 0  # Contador para detectar loop infinito
     
     while True:
         print(f"   Coletando lotes da página {pagina_atual}...")
@@ -67,49 +216,53 @@ def extrair_lotes_de_leilao(page):
         
         print(f"      {lotes_encontrados_nesta_pagina} novos lotes encontrados")
         
-        # Tentar encontrar botão de próxima página
-        try:
-            # Procurar por botões de paginação comuns
-            proxima_pagina = None
-            
-            # Tentar várias opções de seletores para "próxima página"
-            seletores_proxima = [
-                'a[rel="next"]',
-                'a:has-text("Próxima")',
-                'a:has-text("Next")',
-                'a:has-text(">")',
-                'button:has-text("Próxima")',
-                '.pagination a:last-child',
-                'nav[aria-label*="paginação"] a:last-child',
-                'nav[aria-label*="pagination"] a:last-child'
-            ]
-            
-            for seletor in seletores_proxima:
-                try:
-                    elemento = page.locator(seletor).first
-                    if elemento.count() > 0:
-                        # Verificar se não está desabilitado
-                        classes = elemento.get_attribute('class') or ''
-                        aria_disabled = elemento.get_attribute('aria-disabled') or ''
-                        
-                        if 'disabled' not in classes.lower() and aria_disabled != 'true':
-                            proxima_pagina = elemento
-                            break
-                except:
-                    continue
-            
-            if proxima_pagina:
-                print(f"   Navegando para página {pagina_atual + 1}...")
-                proxima_pagina.click()
-                page.wait_for_timeout(2000)
-                page.wait_for_selector('article', timeout=10000)
-                pagina_atual += 1
-            else:
-                # Não há mais páginas
+        # Verificar se encontrou lotes novos
+        if lotes_encontrados_nesta_pagina == 0:
+            paginas_vazias_consecutivas += 1
+            print(f"      ⚠ Nenhum lote novo ({paginas_vazias_consecutivas} páginas vazias consecutivas)")
+            # Se 3 páginas consecutivas não encontrarem lotes novos, parar
+            if paginas_vazias_consecutivas >= 3:
+                print(f"   ⚠ Parando paginação: {paginas_vazias_consecutivas} páginas consecutivas sem lotes novos")
                 break
+        else:
+            # Resetar contador se encontrou lotes
+            paginas_vazias_consecutivas = 0
+        
+        # Tentar encontrar botão de próxima página
+        conseguiu_paginar = False
+        try:
+            # Scroll até o final da página para garantir que a paginação está visível
+            page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+            page.wait_for_timeout(300)
+            
+            # Usar XPath específico do botão "próxima" (ícone chevron-right no último li)
+            # O botão próxima está sempre no último li com a classe arrow-right
+            paginacao_ul = page.locator('xpath=/html/body/main/div[2]/div/section[2]/div/div[3]/div[2]/ul')
+            
+            if paginacao_ul.count() > 0:
+                # Procurar pelo li com classe arrow-right (botão próxima)
+                botao_next_li = paginacao_ul.locator('li.arrow-right').last
                 
-        except:
-            # Erro ao tentar paginar, assumir que não há mais páginas
+                if botao_next_li.count() > 0:
+                    # Verificar se não está desabilitado
+                    classes = botao_next_li.get_attribute('class') or ''
+                    
+                    if 'disabled' not in classes.lower():
+                        # Clicar no link dentro do li
+                        link = botao_next_li.locator('a').first
+                        if link.count() > 0:
+                            print(f"   Navegando para página {pagina_atual + 1}...")
+                            link.click()
+                            page.wait_for_timeout(800)
+                            page.wait_for_selector('article', timeout=10000)
+                            pagina_atual += 1
+                            conseguiu_paginar = True
+                            
+        except Exception as e:
+            print(f"   Erro ao tentar paginar: {str(e)[:50]}")
+        
+        if not conseguiu_paginar:
+            # Não há mais páginas
             break
     
     print(f"   Total de {len(lotes_info)} lotes únicos coletados de {pagina_atual} página(s)")
@@ -122,8 +275,8 @@ def extrair_lotes_de_leilao(page):
             # Navegar para a página do lote - usar domcontentloaded é mais rápido
             page.goto(lote_url, wait_until="domcontentloaded", timeout=30000)
             
-            # Esperar um tempo fixo ao invés de aguardar seletor específico
-            page.wait_for_timeout(2000)
+            # Esperar um tempo menor
+            page.wait_for_timeout(800)
             
             # Extrair título do lote (H2 principal ou H1)
             titulo = "Título não encontrado"
@@ -142,20 +295,24 @@ def extrair_lotes_de_leilao(page):
                 titulo = lote_url.split('/')[-1].replace('-', ' ').title()
             
             # Extrair descrição
-            # Extrair descrição
             descricao = "Descrição não disponível"
             try:
-                # Tentativa 1: XPath específico fornecido
-                desc_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[6]/p')
+                # Tentativa 1: XPath completo fornecido pelo usuário (div inteira)
+                desc_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[6]')
                 if desc_locator.count() > 0:
                     descricao = desc_locator.inner_text(timeout=3000).strip()
                 else:
-                    # Tentativa 2: Fallback antigo
-                    desc_heading = page.locator('text="Descrição"').first
-                    if desc_heading.count() > 0:
-                        desc_container = desc_heading.locator('xpath=..').locator('xpath=following-sibling::*').first
-                        if desc_container.count() > 0:
-                            descricao = desc_container.inner_text(timeout=3000).strip()
+                    # Tentativa 2: XPath do parágrafo específico
+                    desc_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[6]/p')
+                    if desc_locator.count() > 0:
+                        descricao = desc_locator.inner_text(timeout=3000).strip()
+                    else:
+                        # Tentativa 3: Fallback genérico
+                        desc_heading = page.locator('text="Descrição"').first
+                        if desc_heading.count() > 0:
+                            desc_container = desc_heading.locator('xpath=..').locator('xpath=following-sibling::*').first
+                            if desc_container.count() > 0:
+                                descricao = desc_container.inner_text(timeout=3000).strip()
             except:
                 pass
             
@@ -195,8 +352,21 @@ def extrair_lotes_de_leilao(page):
             except:
                 pass
 
+
             # Usar imagem já extraída do card da listagem
             imagem_lote = imagem_card
+            
+            # Extrair símbolo/logo do lote
+            simbolo_lote = ""
+            try:
+                # XPath específico fornecido pelo usuário para o símbolo
+                simbolo_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[5]/ul[1]/li[2]/div[1]/img')
+                if simbolo_locator.count() > 0:
+                    src = simbolo_locator.get_attribute('src')
+                    if src:
+                        simbolo_lote = src if src.startswith('http') else BASE_URL + src
+            except:
+                pass
             
             lote_info = {
                 "codigo_lote": codigo_lote,
@@ -205,21 +375,27 @@ def extrair_lotes_de_leilao(page):
                 "descricao": descricao,
                 "valor_leilao": valor_leilao,
                 "valor_minimo": valor_minimo,
+                "simbolo_lote": simbolo_lote,
                 "imagem_lote": imagem_lote,
                 "url": lote_url
             }
             
             lotes_data.append(lote_info)
+            
+            # Capturar logo do comitente do primeiro lote processado
+            if not comitente_logo_encontrado and simbolo_lote:
+                comitente_logo_encontrado = simbolo_lote
+            
             print(f" ✓")
             
-            # Pausa menor entre requisições
-            time.sleep(0.3)
+            # Pausa mínima entre requisições
+            time.sleep(0.1)
             
         except Exception as e:
             print(f" ✗ ({str(e)[:50]})")
             continue
     
-    return lotes_data
+    return lotes_data, comitente_logo_encontrado
 
 
 def extrair_todos_os_leiloes(page):
@@ -290,35 +466,35 @@ def extrair_todos_os_leiloes(page):
             page.goto(leilao['url'], wait_until="domcontentloaded", timeout=30000)
             page.wait_for_timeout(2000)
             
-            # Extrair lotes deste leilão
-            # Extrair lotes deste leilão
-            lotes = extrair_lotes_de_leilao(page)
+            # Extrair lotes deste leilão (retorna também a logo do comitente)
+            lotes, comitente_logo = extrair_lotes_de_leilao(page)
             
-            # Extrair logo do comitente
-            comitente_logo = ""
-            try:
-                logo_locator = page.locator('xpath=/html/body/section[2]/div/div/div[1]/a/div/img')
-                if logo_locator.count() > 0:
-                    comitente_logo = logo_locator.get_attribute('src')
-            except:
-                pass
-
-            resultados.append({
-                'leilao_titulo': leilao['titulo'],
-                'leilao_url': leilao['url'],
-                'comitente_logo': comitente_logo,
-                'total_lotes': len(lotes),
-                'lotes': lotes
-            })
+            # Se não encontrou logo nos lotes, tentar na página do leilão (fallback)
+            if not comitente_logo:
+                try:
+                    logo_locator = page.locator('xpath=/html/body/section[2]/div/div/div[1]/a/div/img')
+                    if logo_locator.count() > 0:
+                        comitente_logo = logo_locator.get_attribute('src')
+                except:
+                    pass
             
-            print(f"\n   ✓ Total extraído: {len(lotes)} lotes")
-            
+            if lotes:
+                resultados.append({
+                    'leilao_titulo': leilao['titulo'],
+                    'leilao_url': leilao['url'],
+                    'comitente_logo': comitente_logo,
+                    'total_lotes': len(lotes),
+                    'lotes': lotes
+                })
+                print(f"   ✓ {len(lotes)} lotes extraídos")
+            else:
+                print("   ⚠ Nenhum lote encontrado")
+                
         except Exception as e:
             print(f"   ✗ Erro ao processar leilão: {str(e)[:100]}")
             continue
-    
+            
     return resultados
-
 
 def listar_leiloes_disponiveis(page):
     """
@@ -339,9 +515,7 @@ def listar_leiloes_disponiveis(page):
     leiloes_locators = page.locator('a[href*="/eventos/leilao/"]:has(h3)')
     count = leiloes_locators.count()
     
-    print(f"✓ Encontrados {count} cards de leilões")
-    
-    leiloes_info = []
+    leiloes_online = []
     for i in range(count):
         try:
             locator = leiloes_locators.nth(i)
@@ -359,48 +533,47 @@ def listar_leiloes_disponiveis(page):
                 except:
                     titulo = f"Leilão {url_completa.split('/')[-2]}"
                 
-                if not any(l['url'] == url_completa for l in leiloes_info):
-                    leiloes_info.append({
+                if not any(l['url'] == url_completa for l in leiloes_online):
+                    leiloes_online.append({
                         'url': url_completa,
                         'titulo': titulo
                     })
         except:
             continue
             
-    # Salvar lista de disponíveis
+    # Salvar em arquivo temporário
     with open('leiloes_disponiveis.json', 'w', encoding='utf-8') as f:
-        json.dump(leiloes_info, f, ensure_ascii=False, indent=2)
+        json.dump(leiloes_online, f, ensure_ascii=False, indent=4)
         
-    print(f"✓ Lista de {len(leiloes_info)} leilões salva em leiloes_disponiveis.json")
-    return leiloes_info
-
+    return leiloes_online
 
 def processar_leilao_unico(page, url):
     """
     Processa um único leilão e atualiza o JSON principal.
     """
-    print(f"Processando leilão: {url}")
+    print(f"Processando leilão único: {url}")
     page.goto(url, wait_until="domcontentloaded", timeout=30000)
     page.wait_for_timeout(2000)
-    # Extrair título (tentativa)
-    titulo = "Leilão Importado"
+    
+    # Extrair título
+    titulo = f"Leilão {url.split('/')[-2]}"
     try:
         titulo_el = page.locator('h1').first
         if titulo_el.count() > 0:
             titulo = titulo_el.inner_text().strip()
     except:
         pass
-
-    # Extrair logo do comitente
-    comitente_logo = ""
-    try:
-        logo_locator = page.locator('xpath=/html/body/section[2]/div/div/div[1]/a/div/img')
-        if logo_locator.count() > 0:
-            comitente_logo = logo_locator.get_attribute('src')
-    except:
-        pass
-
-    lotes = extrair_lotes_de_leilao(page)
+        
+    lotes, comitente_logo = extrair_lotes_de_leilao(page)
+    
+    # Fallback para logo do comitente
+    if not comitente_logo:
+        try:
+            logo_locator = page.locator('xpath=/html/body/section[2]/div/div/div[1]/a/div/img')
+            if logo_locator.count() > 0:
+                comitente_logo = logo_locator.get_attribute('src')
+        except:
+            pass
     
     novo_dado = {
         'leilao_titulo': titulo,
@@ -410,7 +583,7 @@ def processar_leilao_unico(page, url):
         'lotes': lotes
     }
     
-    # Atualizar JSON principal
+    # Carregar dados existentes
     dados_existentes = []
     if os.path.exists('leiloes_completo.json'):
         try:
@@ -419,49 +592,39 @@ def processar_leilao_unico(page, url):
         except:
             pass
             
-    # Remover entrada antiga se existir (pela URL)
-    dados_existentes = [d for d in dados_existentes if d.get('leilao_url') != url]
-    dados_existentes.append(novo_dado)
-    
-    with open('leiloes_completo.json', 'w', encoding='utf-8') as f:
-        json.dump(dados_existentes, f, ensure_ascii=False, indent=2)
+    # Atualizar ou adicionar
+    encontrado = False
+    for i, item in enumerate(dados_existentes):
+        # Verificar compatibilidade com chaves antigas e novas
+        item_url = item.get('leilao_url') or item.get('url')
+        if item_url == url:
+            dados_existentes[i] = novo_dado
+            encontrado = True
+            break
+            
+    if not encontrado:
+        dados_existentes.append(novo_dado)
         
-    print(f"\n✓ Leilão '{titulo}' atualizado com {len(lotes)} lotes.")
-    return novo_dado
-
+    # Salvar
+    with open('leiloes_completo.json', 'w', encoding='utf-8') as f:
+        json.dump(dados_existentes, f, ensure_ascii=False, indent=4)
+        
+    print(f"✓ Dados salvos em leiloes_completo.json")
 
 def main():
-    """
-    Função principal que coordena a extração.
-    """
-    parser = argparse.ArgumentParser(description='Scraper de Leilões')
-    parser.add_argument('--listar', action='store_true', help='Listar leilões disponíveis')
-    parser.add_argument('--url', type=str, help='URL do leilão para raspar')
+    parser = argparse.ArgumentParser(description='Scraper Leilões PB')
+    parser.add_argument('--url', help='URL específica de um leilão para baixar')
+    parser.add_argument('--listar', action='store_true', help='Apenas listar leilões disponíveis')
     args = parser.parse_args()
 
-    print("\n" + "="*70)
-    print(" SCRAPER DE LEILÕES - LEILÕES PB ".center(70))
-    print("="*70 + "\n")
-    
     with sync_playwright() as p:
         print("Iniciando navegador...")
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                '--disable-blink-features=AutomationControlled',
-                '--disable-dev-shm-usage',
-                '--no-sandbox',
-                '--disable-gpu'
-            ]
-        )
-        
+        browser = p.chromium.launch(headless=True)
         context = browser.new_context(
-            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            viewport={'width': 1920, 'height': 1080}
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            viewport={'width': 1366, 'height': 768}
         )
-        
         page = context.new_page()
-        page.set_default_timeout(30000)
         
         try:
             if args.listar:
@@ -469,25 +632,17 @@ def main():
             elif args.url:
                 processar_leilao_unico(page, args.url)
             else:
-                # Comportamento padrão: extrair tudo (compatibilidade)
-                print("Modo padrão: Extraindo todos os leilões...")
+                # Modo padrão: baixar tudo
                 dados = extrair_todos_os_leiloes(page)
-                if dados:
-                    with open('leiloes_completo.json', 'w', encoding='utf-8') as f:
-                        json.dump(dados, f, ensure_ascii=False, indent=2)
-            
-        except KeyboardInterrupt:
-            print("\n\n⚠ Execução interrompida pelo usuário (Ctrl+C)")
+                with open('leiloes_completo.json', 'w', encoding='utf-8') as f:
+                    json.dump(dados, f, ensure_ascii=False, indent=4)
+                print(f"✓ Extração concluída! Dados salvos em leiloes_completo.json")
+                
         except Exception as e:
-            print(f"\n✗ Erro fatal: {e}")
-            import traceback
-            traceback.print_exc()
-            sys.exit(1)
+            print(f"Erro fatal: {e}")
         finally:
-            print("\nFechando navegador...")
+            print("Fechando navegador...")
             browser.close()
-            print("✓ Navegador fechado\n")
-
 
 if __name__ == "__main__":
     main()

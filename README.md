@@ -2,23 +2,20 @@
 
 Este sistema permite visualizar os dados extraídos do site de leilões e gerar relatórios em HTML formatados.
 
-## Pré-requisitos
+## Instalação
 
-1. Python instalado.
-2. Dependências instaladas:
-   ```bash
-   pip install -r requirements.txt
+1. Certifique-se de ter o **Python** instalado no seu computador.
+2. Execute o arquivo de instalação (clique duplo):
    ```
-3. Navegadores do Playwright instalados (para o scraper):
-   ```bash
-   playwright install chromium
+   instalar_dependencias.bat
    ```
+   *Isso irá instalar todas as bibliotecas necessárias e os navegadores do Playwright.*
 
 ## Como Usar
 
-1. Execute o sistema:
-   ```bash
-   python sistema_leiloes.py
+1. Para abrir o programa, execute o arquivo (clique duplo):
+   ```
+   iniciar_sistema.bat
    ```
 
 2. **Na interface:**
@@ -30,6 +27,8 @@ Este sistema permite visualizar os dados extraídos do site de leilões e gerar 
 
 ## Arquivos do Projeto
 
+- `iniciar_sistema.bat`: Atalho para iniciar o programa facilmente.
+- `instalar_dependencias.bat`: Script para instalar tudo o que é necessário.
 - `sistema_leiloes.py`: O aplicativo desktop (interface gráfica).
 - `scraper.py`: O script que baixa os dados do site.
 - `Relatório Leilões.html`: O modelo (template) usado para gerar os relatórios.

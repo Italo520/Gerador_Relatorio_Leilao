@@ -8,11 +8,35 @@ from datetime import datetime
 import shutil
 from playwright.sync_api import sync_playwright
 import queue
+import scraper
+import io
+import sys
+from contextlib import redirect_stdout, redirect_stderr
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 # Configurações
 ARQUIVO_JSON = 'leiloes_completo.json'
-ARQUIVO_TEMPLATE = 'Relatório Leilões.html'
+ARQUIVO_TEMPLATE = resource_path('Relatório Leilões.html')
 ARQUIVO_SCRAPER = 'scraper.py'
+
+class StreamToQueue:
+    def __init__(self, queue):
+        self.queue = queue
+    def write(self, buf):
+        for line in buf.splitlines():
+            if line.strip():
+                self.queue.put(line.strip())
+    def flush(self):
+        pass
 
 class SistemaLeiloes:
     def __init__(self, page: ft.Page):
@@ -701,36 +725,14 @@ class SistemaLeiloes:
         thread.start()
 
     def _executar_scraper_thread(self, args):
-        mensagens_log = []
         try:
-            # Executa o script python com argumentos
-            cmd = ['python', ARQUIVO_SCRAPER] + args
+            # Redirecionar stdout e stderr para a fila de log
+            stream = StreamToQueue(self.log_queue)
             
-            # Usar Popen para capturar saída em tempo real
-            process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                encoding='utf-8',
-                errors='replace',
-                bufsize=1,
-                universal_newlines=True
-            )
+            with redirect_stdout(stream), redirect_stderr(stream):
+                scraper.run_scraper(args)
             
-            # Ler saída linha por linha e coletar
-            for line in process.stdout:
-                if line.strip():
-                    mensagens_log.append(line.strip())
-                    # Adicionar à fila para exibição
-                    self.log_queue.put(line.strip())
-            
-            process.wait()
-            
-            if process.returncode == 0:
-                self._scraper_concluido(sucesso=True)
-            else:
-                self._scraper_concluido(sucesso=False, msg="Erro ao executar scraper")
+            self._scraper_concluido(sucesso=True)
                 
         except Exception as e:
             self._scraper_concluido(sucesso=False, msg=str(e))

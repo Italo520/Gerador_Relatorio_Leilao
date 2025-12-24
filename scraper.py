@@ -7,8 +7,10 @@ import os
 
 # Forçar encoding UTF-8 no Windows para evitar erros de impressão
 if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding='utf-8')
-    sys.stderr.reconfigure(encoding='utf-8')
+    if sys.stdout is not None:
+        sys.stdout.reconfigure(encoding='utf-8')
+    if sys.stderr is not None:
+        sys.stderr.reconfigure(encoding='utf-8')
 
 BASE_URL = "https://www.leiloespb.com.br"
 
@@ -644,11 +646,15 @@ def processar_leilao_unico(page, url):
         
     print(f"✓ Dados salvos em leiloes_completo.json")
 
-def main():
+def run_scraper(args_list=None):
     parser = argparse.ArgumentParser(description='Scraper Leilões PB')
     parser.add_argument('--url', help='URL específica de um leilão para baixar')
     parser.add_argument('--listar', action='store_true', help='Apenas listar leilões disponíveis')
-    args = parser.parse_args()
+    
+    if args_list:
+        args = parser.parse_args(args_list)
+    else:
+        args = parser.parse_args()
 
     with sync_playwright() as p:
         print("Iniciando navegador...")
@@ -678,4 +684,4 @@ def main():
             browser.close()
 
 if __name__ == "__main__":
-    main()
+    run_scraper()

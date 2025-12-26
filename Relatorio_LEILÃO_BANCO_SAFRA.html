@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600&display=swap"
         rel="stylesheet">
-    <script src="https://kit.fontawesome.com/70b1510195.js" crossorigin="anonymous"></script>
 
     <style>
         * {
@@ -38,7 +37,6 @@
             padding: 0;
         }
 
-        /* HEADER */
         .r-header {
             background: #f9f9f9;
             border-bottom: 1px solid #ddd;
@@ -60,10 +58,6 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
             transition: background-color 0.3s;
         }
 
@@ -71,23 +65,14 @@
             background-color: #0056b3;
         }
 
-        .m-r-xs {
-            margin-right: 5px;
-        }
-
-        /* PRINT PAGE */
         .print-page {
             padding: 20px;
-            /* Reduzido de 40px */
         }
 
-        /* PAGE HEADER */
         .page-header {
             margin-bottom: 20px;
-            /* Reduzido de 30px */
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
-            /* Reduzido de 20px */
         }
 
         .page-header table {
@@ -97,7 +82,6 @@
 
         .page-header td {
             padding: 5px;
-            /* Reduzido de 10px */
             vertical-align: middle;
         }
 
@@ -109,27 +93,22 @@
         .text-right {
             text-align: right;
             font-size: 12px;
-            /* Reduzido de 14px */
             line-height: 1.4;
         }
 
         .page-header h2 {
             font-family: 'Titillium Web', sans-serif;
             font-size: 20px;
-            /* Reduzido de 24px */
             font-weight: 600;
             margin-top: 5px;
             color: #333;
         }
 
-        /* LEILÃO HEADER */
         .leilao-header {
             background: #f9f9f9;
             padding: 15px;
-            /* Reduzido de 20px */
             border: 1px solid #ddd;
             margin-bottom: 20px;
-            /* Reduzido de 30px */
             border-radius: 4px;
         }
 
@@ -140,7 +119,6 @@
 
         .leilao-header td {
             padding: 5px;
-            /* Reduzido de 10px */
             vertical-align: middle;
         }
 
@@ -161,7 +139,6 @@
         .leilao-info .titulo {
             font-family: 'Titillium Web', sans-serif;
             font-size: 16px;
-            /* Reduzido de 18px */
             font-weight: 600;
             color: #333;
             margin-bottom: 5px;
@@ -169,7 +146,6 @@
 
         .datas {
             font-size: 12px;
-            /* Reduzido de 13px */
             color: #666;
             line-height: 1.4;
             margin-bottom: 3px;
@@ -187,7 +163,6 @@
 
         .font-min {
             font-size: 11px;
-            /* Reduzido de 12px */
         }
 
         .text-uppercase {
@@ -198,10 +173,8 @@
             color: rgba(0, 0, 0, 0.5);
         }
 
-        /* LEILÃO TABLE */
         .leilao {
             margin-top: 20px;
-            /* Reduzido de 30px */
         }
 
         .leilao table {
@@ -212,9 +185,7 @@
 
         .leilao tr {
             border-bottom: 1px solid #ccc;
-            /* Alterado de dashed para solid */
             padding: 10px 0;
-            /* Reduzido de 20px */
         }
 
         .leilao tr:nth-child(even) {
@@ -228,35 +199,17 @@
 
         .leilao td {
             padding: 10px;
-            /* Reduzido de 15px */
             vertical-align: middle;
         }
 
-        .font-destaq {
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .font-bold {
-            font-weight: 600;
-        }
-
-        .text-nowrap {
-            white-space: nowrap;
-        }
-
-        /* LOTE NÚMERO */
         .lote-numero {
             background: transparent;
             color: #000;
-            /* Preto absoluto */
             padding: 0;
             border-radius: 0;
             text-align: center;
             font-weight: 800;
-            /* Mais negrito */
             font-size: 28px;
-            /* Aumentado para destaque */
         }
 
         .leilao tr.retirado .lote-numero {
@@ -264,89 +217,67 @@
             color: #dc3545;
         }
 
-        /* LEILAO LOTE TITULO */
         .leilao-lote-titulo {
             flex: 1;
             min-width: 300px;
-            /* Reduzido de 400px */
         }
 
         .leilao-lote-titulo .titulo {
             font-family: 'Titillium Web', sans-serif;
             font-weight: 700;
-            /* Mais negrito */
             font-size: 14px;
-            /* Reduzido de 15px */
             color: #000;
-            /* Preto absoluto */
             margin-bottom: 4px;
             line-height: 1.2;
         }
 
         .leilao-lote-titulo .desc {
             font-size: 11px;
-            /* Reduzido de 12px */
             color: #333;
-            /* Mais escuro para impressão */
             line-height: 1.3;
             margin-bottom: 4px;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
 
-        /* STATS */
         .stats {
             font-size: 13px;
-            /* Aumentado de 12px */
             color: #000;
-            /* Preto para impressão */
             margin-bottom: 5px;
             font-weight: 700;
-            /* Mais negrito */
         }
 
         .stats.lances {
             color: #000;
-            /* Preto para impressão */
             font-size: 11px;
             font-weight: 400;
         }
 
         .stats.valorAtual {
             color: #000;
-            /* Preto para impressão */
             font-size: 14px;
         }
 
         .stats.avaliacao {
             color: #000 !important;
-            /* Forçar preto para impressão */
             font-size: 14px;
             border-top: 1px solid #000;
             padding-top: 2px;
         }
 
-        /* IMG COMITENTE */
         .img-comitente {
             text-align: center;
             min-width: 70px;
-            /* Aumentado de 50px */
         }
 
         .img-comitente img {
             max-width: 60px;
-            /* Aumentado de 40px */
             height: auto;
             border-radius: 4px;
         }
 
-        /* UTILITIES */
-        .hidden-print {
-            display: block;
-        }
-
         @media print {
-            .hidden-print {
+            .r-header {
                 display: none;
             }
 
@@ -357,16 +288,27 @@
 
             .print-page {
                 padding: 10px;
-                /* Margem de impressão reduzida */
             }
 
             .leilao tr {
                 page-break-inside: avoid;
-                /* Evitar quebra de lote no meio da página */
+            }
+
+            .stats {
+                white-space: nowrap !important;
+            }
+
+            .stats span {
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+
+            .stats.valorAtual,
+            .stats.avaliacao {
+                white-space: nowrap !important;
             }
         }
 
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .print-page {
                 padding: 10px;
@@ -396,20 +338,16 @@
     <div id="app">
         <div class="default-subpage leiloes-print-page v1">
 
-            <div class="r-header hidden-print">
+            <div class="r-header">
                 <div class="r-buttons">
-                    <button class="btn-info2" onclick="window.print()">
-                        <i class="fa fa-print m-r-xs"></i> Imprimir
-                    </button>
-                    <button class="btn-info2" onclick="exportarPDF()" style="background-color: #28a745;">
-                        <i class="fa fa-file-pdf m-r-xs"></i> Exportar PDF
-                    </button>
+                    <button class="btn-info2" onclick="window.print()">🖨️ Imprimir</button>
+                    <button class="btn-info2" onclick="exportarPDF()" style="background-color: #28a745;">📄 Exportar
+                        PDF</button>
                 </div>
             </div>
 
             <div class="print-page">
 
-                <!-- PAGE HEADER -->
                 <div class="page-header">
                     <table>
                         <tr>
@@ -425,7 +363,6 @@
                     </table>
                 </div>
 
-                <!-- LEILÃO HEADER -->
                 <div class="leilao-header">
                     <table>
                         <tr>
@@ -441,7 +378,7 @@
                                     <div class="datas font-min">
                                         <div>
                                             <span>Abertura:</span>
-                                            <span id="dataAbertura">24/12/2025 09:48</span>
+                                            <span id="dataAbertura">26/12/2025 10:31</span>
                                         </div>
                                     </div>
                                     <div class="datas extra text-uppercase text-black-50 font-min">
@@ -459,7 +396,6 @@
                     </table>
                 </div>
 
-                <!-- LEILÃO TABLE -->
                 <div class="leilao">
                     <table id="leilaoTable">
                         <tbody id="leilaoBody">
@@ -474,8 +410,7 @@
     </div>
 
     <script>
-        // Dados de exemplo
-        const lotes = [{"numero": "1", "titulo": "FORD/RANGER XLS CD4M32 - 2015/2015 | DIESEL", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 1 / DATA: 26.12.2025\nFORD/RANGER XLS CD4M32 - 2015/2015 | DIESEL\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$97600", "lances": 0, "valorMinimo": "66.500,00", "avaliacao": "teste", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/31775/arquivos/69331af38099b-69331af3b88d5.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "2", "titulo": "CHEV/ONIX 10MT LT1 - 2020/2020 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 2 / DATA: 26.12.2025\nCHEV/ONIX 10MT LT1 - 2020/2020 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$54600", "lances": 0, "valorMinimo": "37.800,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/6925b1158601d-6925b11599392.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "3", "titulo": "FORD ECOSPORT FSL 1.6 - 2015/2015 | GASOLINA/ALCOOL/GAS NATURAL", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 3 / DATA: 26.12.2025\nFORD ECOSPORT FSL 1.6 - 2015/2015 | GASOLINA/ALCOOL/GAS NATURAL\nOC: /\n\nPOSSUI CHAVE: NÃO / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$55800", "lances": 0, "valorMinimo": "30.800,00", "avaliacao": "25.000,00", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68d2e9ca29cf5-68d2e9cad1007.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "4", "titulo": "CITROEN/C3 TENDANCE BVA - 2014/2015 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 4 / DATA: 26.12.2025\nCITROEN/C3 TENDANCE BVA - 2014/2015 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$42100", "lances": 0, "valorMinimo": "24.700,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68ecfe80117f5-68ecfe812f395.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "5", "titulo": "VW/GOL 1.0L MC4 - 2021/2022", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 5 / DATA: 26.12.2025\nVW/GOL 1.0L MC4 - 2021/2022\nOC: /\n\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$51500", "lances": 0, "valorMinimo": "36.100,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/31487/arquivos/694bdee4846e8-694bdee4bc39d.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "6", "titulo": "FORD/KA SE 1.0 HA C - 2019/2019", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 6 / DATA: 26.12.2025\nFORD/KA SE 1.0 HA C - 2019/2019\nOC: /\n\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$46000", "lances": 0, "valorMinimo": "30.700,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68f92d3a747cd-68f92d3ab3346.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "7", "titulo": "FORD/KA SE 1.0 SD C - 2020/2020", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 7 / DATA: 26.12.2025\nFORD/KA SE 1.0 SD C - 2020/2020\nOC: /\n\nPOSSUI CHAVE: VERIFICANDO / POSSUI MANUAL: VERIFICANDO\nLOCALIZAÇÃO:\nVALOR MÉDIO DE MERCADO: R$47600", "lances": 0, "valorMinimo": "31.800,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/6928a27f6e974-6928a27fdae8a.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "8", "titulo": "FORD/KA SE 1.0 HA C - 2020/2021 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 8 / DATA: 26.12.2025\nFORD/KA SE 1.0 HA C - 2020/2021 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$48500", "lances": 0, "valorMinimo": "33.400,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68a7366993896-68a73669cd0c0.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "9", "titulo": "CITROEN/C3 AIRC TENDAN A - 2015/2015 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 9 / DATA: 26.12.2025\nCITROEN/C3 AIRC TENDAN A - 2015/2015 | ALCOOL/GASOLINA\nOC: /\nSINISTRADO/RECUPERADO\nPOSSUI CHAVE: NÃO / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$41800", "lances": 0, "valorMinimo": "20.500,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68e95ab34403c-68e95ab383442.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "10", "titulo": "FIAT/ARGO DRIVE 1.3 GSR - 2018/2018 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 10 / DATA: 26.12.2025\nFIAT/ARGO DRIVE 1.3 GSR - 2018/2018 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$51900", "lances": 0, "valorMinimo": "40.500,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/29749/arquivos/68790de1d38ad-68790de216cfa.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}];
+        const lotes = [{"numero": "1", "titulo": "FORD/RANGER XLS CD4M32 - 2015/2015 | DIESEL", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 1 / DATA: 26.12.2025\nFORD/RANGER XLS CD4M32 - 2015/2015 | DIESEL\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$97600", "lances": 0, "valorMinimo": "66.500,00", "avaliacao": "1.000,00", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/31775/arquivos/69331af38099b-69331af3b88d5.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "2", "titulo": "CHEV/ONIX 10MT LT1 - 2020/2020 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 2 / DATA: 26.12.2025\nCHEV/ONIX 10MT LT1 - 2020/2020 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$54600", "lances": 0, "valorMinimo": "37.800,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/6925b1158601d-6925b11599392.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "3", "titulo": "FORD ECOSPORT FSL 1.6 - 2015/2015 | GASOLINA/ALCOOL/GAS NATURAL", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 3 / DATA: 26.12.2025\nFORD ECOSPORT FSL 1.6 - 2015/2015 | GASOLINA/ALCOOL/GAS NATURAL\nOC: /\n\nPOSSUI CHAVE: NÃO / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$55800", "lances": 0, "valorMinimo": "30.800,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68d2e9ca29cf5-68d2e9cad1007.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "4", "titulo": "CITROEN/C3 TENDANCE BVA - 2014/2015 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 4 / DATA: 26.12.2025\nCITROEN/C3 TENDANCE BVA - 2014/2015 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$42100", "lances": 0, "valorMinimo": "24.700,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68ecfe80117f5-68ecfe812f395.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "5", "titulo": "VW/GOL 1.0L MC4 - 2021/2022", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 5 / DATA: 26.12.2025\nVW/GOL 1.0L MC4 - 2021/2022\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$51500", "lances": 0, "valorMinimo": "36.100,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/31487/arquivos/694bdee4846e8-694bdee4bc39d.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "6", "titulo": "FORD/KA SE 1.0 HA C - 2019/2019", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 6 / DATA: 26.12.2025\nFORD/KA SE 1.0 HA C - 2019/2019\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$46000", "lances": 0, "valorMinimo": "30.700,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68f92d3a747cd-68f92d3ab3346.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "7", "titulo": "FORD/KA SE 1.0 SD C - 2020/2020", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 7 / DATA: 26.12.2025\nFORD/KA SE 1.0 SD C - 2020/2020\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$47600", "lances": 0, "valorMinimo": "31.800,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/6928a27f6e974-6928a27fdae8a.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "8", "titulo": "FORD/KA SE 1.0 HA C - 2020/2021 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 8 / DATA: 26.12.2025\nFORD/KA SE 1.0 HA C - 2020/2021 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$48500", "lances": 0, "valorMinimo": "33.400,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68a7366993896-68a73669cd0c0.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "9", "titulo": "CITROEN/C3 AIRC TENDAN A - 2015/2015 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 9 / DATA: 26.12.2025\nCITROEN/C3 AIRC TENDAN A - 2015/2015 | ALCOOL/GASOLINA\nOC: /\nSINISTRADO/RECUPERADO\nPOSSUI CHAVE: NÃO / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$41800", "lances": 0, "valorMinimo": "20.500,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/arquivos/68e95ab34403c-68e95ab383442.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}, {"numero": "10", "titulo": "FIAT/ARGO DRIVE 1.3 GSR - 2018/2018 | ALCOOL/GASOLINA", "descricao": "Descrição\n\nBANCO SAFRA / LOTE: 10 / DATA: 26.12.2025\nFIAT/ARGO DRIVE 1.3 GSR - 2018/2018 | ALCOOL/GASOLINA\nOC: /\n\nPOSSUI CHAVE: SIM / POSSUI MANUAL: NÃO\nLOCALIZAÇÃO: PÁTIO PB\nVALOR MÉDIO DE MERCADO: R$51900", "lances": 0, "valorMinimo": "40.500,00", "avaliacao": "", "localizacao": "Paraíba", "imagem": "https://static.suporteleiloes.com.br/leiloespbcombr/bens/29749/arquivos/68790de1d38ad-68790de216cfa.jpg", "comitente": "https://static.suporteleiloes.com.br/leiloespbcombr/comitentes/sl-c-2-68cd81e26d506-68cd81e26d96a.png", "retirado": false}];
 
         function renderLeilao() {
             const tbody = document.getElementById('leilaoBody');
@@ -526,7 +461,6 @@
             alert('Função de exportação PDF será implementada com uma biblioteca como html2pdf ou jsPDF');
         }
 
-        // Inicializar
         renderLeilao();
     </script>
 </body>

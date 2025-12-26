@@ -331,7 +331,7 @@ class SistemaLeiloes:
                 columns=[
                     ft.DataColumn(ft.Text("Lote")),
                     ft.DataColumn(ft.Text("Título")),
-                    ft.DataColumn(ft.Text("Avaliação")), # Nova coluna
+                    ft.DataColumn(ft.Text("Avaliação"), numeric=True), # Coluna numérica para mais espaço
                     ft.DataColumn(ft.Text("Valor")),
                     ft.DataColumn(ft.Text("Link")),
                 ],
@@ -339,6 +339,8 @@ class SistemaLeiloes:
                 border=ft.border.all(1, ft.Colors.GREY_200),
                 vertical_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
                 horizontal_lines=ft.border.BorderSide(1, ft.Colors.GREY_200),
+                column_spacing=30,  # Mais espaço entre colunas
+                data_row_max_height=50,  # Altura máxima das linhas
             )
 
             # Função auxiliar para extrair número do lote para ordenação
@@ -363,10 +365,12 @@ class SistemaLeiloes:
                             ft.DataCell(ft.Text(titulo_lote, weight=ft.FontWeight.BOLD)),
                             ft.DataCell(ft.TextField(
                                 value=self.avaliacoes.get(lote.get('url') or lote.get('numero_lote'), ''),
-                                width=100,
-                                height=30,
-                                text_size=12,
-                                content_padding=5,
+                                expand=True,
+                                height=40,
+                                text_size=14,
+                                content_padding=10,
+                                text_align=ft.TextAlign.RIGHT,
+                                border_color=ft.Colors.BLUE_200,
                                 on_change=lambda e, l=lote: self.atualizar_avaliacao(e, l)
                             )),
                             ft.DataCell(ft.Text(valor)),
@@ -386,6 +390,16 @@ class SistemaLeiloes:
                 header_detalhes,
                 ft.Divider(),
                 ft.Text("Pré-visualização dos Lotes:", weight=ft.FontWeight.BOLD),
+                ft.Container(
+                    content=ft.Row([
+                        ft.Icon(ft.Icons.INFO_OUTLINE, color=ft.Colors.BLUE_600, size=16),
+                        ft.Text("Campo Avaliação: Digite apenas números (ex: 150000 → 1.500,00)", 
+                               size=12, color=ft.Colors.BLUE_700, italic=True)
+                    ], spacing=5),
+                    bgcolor=ft.Colors.BLUE_50,
+                    border_radius=5,
+                    padding=8
+                ),
                 ft.Column([tabela, aviso], scroll=ft.ScrollMode.AUTO, expand=True)
             ])
             
@@ -454,11 +468,49 @@ class SistemaLeiloes:
                 
         return titulo
 
+    def formatar_moeda_brasileira(self, valor_str):
+        """
+        Formata uma string numérica para o formato monetário brasileiro.
+        Ex: "1234567" -> "12.345,67"
+        """
+        # Remover tudo que não é dígito
+        apenas_digitos = ''.join(filter(str.isdigit, valor_str))
+        
+        if not apenas_digitos:
+            return ''
+        
+        # Converter para inteiro (centavos)
+        valor_centavos = int(apenas_digitos)
+        
+        # Converter para reais (dividir por 100)
+        valor_reais = valor_centavos / 100
+        
+        # Formatar com separador de milhares (.) e decimais (,)
+        valor_formatado = f"{valor_reais:,.2f}"
+        
+        # Trocar vírgula por ponto (milhares) e ponto por vírgula (decimais) - padrão brasileiro
+        valor_formatado = valor_formatado.replace(',', 'TEMP').replace('.', ',').replace('TEMP', '.')
+        
+        return valor_formatado
+
     def atualizar_avaliacao(self, e, lote):
-        """Atualiza o valor da avaliação no dicionário"""
+        """Atualiza o valor da avaliação no dicionário com formatação monetária"""
         chave = lote.get('url') or lote.get('numero_lote')
         if chave:
-            self.avaliacoes[chave] = e.control.value
+            # Obter o valor digitado
+            valor_digitado = e.control.value
+            
+            # Formatar o valor
+            valor_formatado = self.formatar_moeda_brasileira(valor_digitado)
+            
+            # Atualizar o campo com o valor formatado
+            e.control.value = valor_formatado
+            
+            # Salvar no dicionário
+            self.avaliacoes[chave] = valor_formatado
+            
+            # Atualizar a interface
+            self.page.update()
 
 
     def _gerar_conteudo_html(self):
@@ -612,14 +664,20 @@ class SistemaLeiloes:
 
         try:
             nome_arquivo = f"{nome_base}.html"
+            caminho_completo = os.path.abspath(nome_arquivo)
+            
             with open(nome_arquivo, 'w', encoding='utf-8') as f:
                 f.write(html_content)
 
-            self.mostrar_mensagem(f"Relatório HTML gerado: {nome_arquivo}")
+            self.mostrar_mensagem(f"✅ Relatório salvo em:\n{caminho_completo}")
+            
+            # Tentar abrir no navegador
             try:
-                os.startfile(nome_arquivo)
-            except:
-                pass
+                os.startfile(caminho_completo)
+                self.mostrar_mensagem("🌐 Abrindo relatório no navegador...")
+            except Exception as e_open:
+                self.mostrar_mensagem(f"⚠️ Arquivo salvo, mas não foi possível abrir automaticamente.\nAbra manualmente: {caminho_completo}", erro=True)
+                
         except Exception as ex:
             self.mostrar_mensagem(f"Erro ao salvar HTML: {ex}", erro=True)
 

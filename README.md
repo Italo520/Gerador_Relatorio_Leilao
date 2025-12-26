@@ -22,8 +22,19 @@ Este sistema permite visualizar os dados extraídos do site de leilões e gerar 
    - Clique em **"Atualizar Dados"** para rodar o scraper e buscar os leilões mais recentes.
    - Selecione um leilão na lista lateral.
    - Visualize os lotes na tabela central.
+   - **Preencha o campo "Avaliação"** digitando apenas números (ex: `150000` → `1.500,00`). A formatação de moeda brasileira será aplicada automaticamente.
    - Clique em **"Gerar Relatório HTML"** para criar o arquivo do relatório.
    - O arquivo HTML será salvo na mesma pasta e aberto automaticamente.
+
+## Funcionalidades
+
+### 💰 Formatação Automática de Moeda
+- Digite apenas números no campo "Avaliação"
+- O sistema formata automaticamente para o padrão brasileiro (R$ 1.234,56)
+- Duas casas decimais após a vírgula
+- Separação de milhares com ponto
+- Para mais detalhes, consulte [FORMATACAO_MOEDA.md](FORMATACAO_MOEDA.md)
+
 
 ## Arquivos do Projeto
 

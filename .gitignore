@@ -2,3 +2,8 @@ __pycache__/
 build/
 dist/
 *.pyc
+.env
+.venv/
+Relatorio_*.html
+*.bkp
+leiloes_disponiveis.json

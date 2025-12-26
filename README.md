@@ -33,7 +33,7 @@ Este sistema permite visualizar os dados extraídos do site de leilões e gerar 
 - O sistema formata automaticamente para o padrão brasileiro (R$ 1.234,56)
 - Duas casas decimais após a vírgula
 - Separação de milhares com ponto
-- Para mais detalhes, consulte [FORMATACAO_MOEDA.md](FORMATACAO_MOEDA.md)
+- Para mais detalhes, consulte a documentação do código.
 
 
 ## Arquivos do Projeto

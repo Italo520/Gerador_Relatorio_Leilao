@@ -52,6 +52,16 @@ class SistemaLeiloes:
         self.log_queue = queue.Queue()  # Fila para mensagens de log thread-safe
         self.log_timer = None  # Timer para atualizar log periodicamente
         
+        # Carregar imagem de lote retirado (base64)
+        self.imagem_retirado_base64 = ""
+        try:
+            caminho_img = resource_path('lote_retirado_base64.txt')
+            if os.path.exists(caminho_img):
+                with open(caminho_img, 'r') as f:
+                    self.imagem_retirado_base64 = f.read().strip()
+        except Exception as e:
+            print(f"Erro ao carregar imagem de lote retirado: {e}")
+        
         self.build_ui()
         
         # File Picker para salvar PDF
@@ -559,6 +569,13 @@ class SistemaLeiloes:
                 if titulo_limpo.upper() == "LOTE" or not titulo_limpo.strip():
                     titulo_limpo = num_str # Já é "LOTE X"
 
+                # Verificar se está retirado
+                is_retirado = lote.get('retirado', False)
+                imagem_lote = lote.get('imagem_lote', '')
+                
+                if is_retirado and self.imagem_retirado_base64:
+                    imagem_lote = f"data:image/jpeg;base64,{self.imagem_retirado_base64}"
+
                 lotes_html.append({
                     "numero": apenas_numero,
                     "titulo": titulo_limpo,
@@ -567,9 +584,9 @@ class SistemaLeiloes:
                     "valorMinimo": valor_limpo,
                     "avaliacao": self.avaliacoes.get(lote.get('url') or lote.get('numero_lote'), ''), # Incluir avaliação
                     "localizacao": "Paraíba", # Padrão
-                    "imagem": lote.get('imagem_lote', ''),
+                    "imagem": imagem_lote,
                     "comitente": lote.get('simbolo_lote', ''),
-                    "retirado": False
+                    "retirado": is_retirado
                 })
 
             # Ler template

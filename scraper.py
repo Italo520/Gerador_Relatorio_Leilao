@@ -105,6 +105,9 @@ def extrair_dados_lote_individual(page, lote_url):
         except:
             pass
         
+        except:
+            pass
+        
         # Extrair imagem do lote (foto principal)
         imagem_lote = ""
         try:
@@ -132,6 +135,18 @@ def extrair_dados_lote_individual(page, lote_url):
         except:
             pass
         
+        # Extrair status retirado
+        retirado = False
+        try:
+            # XPath específico fornecido para status retirado
+            status_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[2]/div/div[1]/ul[3]/li[2]/div[2]/strong')
+            if status_locator.count() > 0:
+                texto_status = status_locator.inner_text(timeout=3000).strip().lower()
+                if "retirado" in texto_status:
+                    retirado = True
+        except:
+            pass
+        
         return {
             "codigo_lote": codigo_lote,
             "numero_lote": numero_lote,
@@ -141,6 +156,7 @@ def extrair_dados_lote_individual(page, lote_url):
             "valor_minimo": valor_minimo,
             "simbolo_lote": simbolo_lote,
             "imagem_lote": imagem_lote,
+            "retirado": retirado,
             "url": lote_url
         }
     except Exception as e:
@@ -403,6 +419,17 @@ def extrair_lotes_de_leilao(page):
             except:
                 pass
             
+            # Extrair status retirado
+            retirado = False
+            try:
+                status_locator = page.locator('xpath=/html/body/section[4]/div/div[2]/div/div[2]/div/div[1]/ul[3]/li[2]/div[2]/strong')
+                if status_locator.count() > 0:
+                    texto_status = status_locator.inner_text(timeout=3000).strip().lower()
+                    if "retirado" in texto_status:
+                        retirado = True
+            except:
+                pass
+            
             lote_info = {
                 "codigo_lote": codigo_lote,
                 "numero_lote": numero_lote,
@@ -412,6 +439,7 @@ def extrair_lotes_de_leilao(page):
                 "valor_minimo": valor_minimo,
                 "simbolo_lote": simbolo_lote,
                 "imagem_lote": imagem_lote,
+                "retirado": retirado,
                 "url": lote_url
             }
             

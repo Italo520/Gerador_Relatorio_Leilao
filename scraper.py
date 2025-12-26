@@ -105,9 +105,6 @@ def extrair_dados_lote_individual(page, lote_url):
         except:
             pass
         
-        except:
-            pass
-        
         # Extrair imagem do lote (foto principal)
         imagem_lote = ""
         try:

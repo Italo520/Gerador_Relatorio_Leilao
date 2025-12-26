@@ -219,7 +219,9 @@ def extrair_lotes_de_leilao(page):
                                 # Tentar pegar a imagem dentro do article
                                 img = card.locator('img').first
                                 if img.count() > 0:
-                                    imagem = img.get_attribute('src') or ""
+                                    src = img.get_attribute('src') or ""
+                                    if src:
+                                        imagem = src if src.startswith('http') else BASE_URL + src
                             except:
                                 pass
                             
@@ -534,7 +536,9 @@ def extrair_todos_os_leiloes(page):
                 try:
                     logo_locator = page.locator('xpath=/html/body/section[2]/div/div/div[1]/a/div/img')
                     if logo_locator.count() > 0:
-                        comitente_logo = logo_locator.get_attribute('src')
+                        src = logo_locator.get_attribute('src')
+                        if src:
+                            comitente_logo = src if src.startswith('http') else BASE_URL + src
                 except:
                     pass
             
@@ -631,7 +635,9 @@ def processar_leilao_unico(page, url):
         try:
             logo_locator = page.locator('xpath=/html/body/section[2]/div/div/div[1]/a/div/img')
             if logo_locator.count() > 0:
-                comitente_logo = logo_locator.get_attribute('src')
+                src = logo_locator.get_attribute('src')
+                if src:
+                    comitente_logo = src if src.startswith('http') else BASE_URL + src
         except:
             pass
     

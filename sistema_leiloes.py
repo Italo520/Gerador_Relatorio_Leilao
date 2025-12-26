@@ -548,6 +548,21 @@ class SistemaLeiloes:
 
             titulo_leilao = self.selected_leilao.get('leilao_titulo', 'Relatório de Leilão')
             
+            # 5. Determinar Logo do Comitente (Mover para o início para usar como fallback nos lotes)
+            logo_url = self.selected_leilao.get('comitente_logo', '')
+            
+            # Se o logo for relativo ou vazio, tentar encontrar um válido nos lotes
+            if not logo_url or (not logo_url.startswith('http') and not logo_url.startswith('data:')):
+                for lote in lotes_originais:
+                    simbolo = lote.get('simbolo_lote', '')
+                    if simbolo and simbolo.startswith('http'):
+                        logo_url = simbolo
+                        break
+            
+            # Se ainda for relativo, adicionar BASE_URL como fallback
+            if logo_url and not logo_url.startswith('http') and not logo_url.startswith('data:'):
+                logo_url = scraper.BASE_URL + logo_url
+            
             for lote in lotes_originais:
                 # Limpar valor (remover R$ para o template adicionar)
                 valor = lote.get('valor_leilao', '') or lote.get('valor_minimo', '')
@@ -572,6 +587,8 @@ class SistemaLeiloes:
                 # Verificar se está retirado
                 is_retirado = lote.get('retirado', False)
                 imagem_lote = lote.get('imagem_lote', '')
+                if imagem_lote and not imagem_lote.startswith('http') and not imagem_lote.startswith('data:'):
+                    imagem_lote = scraper.BASE_URL + imagem_lote
                 
                 if is_retirado and self.imagem_retirado_base64:
                     imagem_lote = f"data:image/jpeg;base64,{self.imagem_retirado_base64}"
@@ -585,7 +602,7 @@ class SistemaLeiloes:
                     "avaliacao": self.avaliacoes.get(lote.get('url') or lote.get('numero_lote'), ''), # Incluir avaliação
                     "localizacao": "Paraíba", # Padrão
                     "imagem": imagem_lote,
-                    "comitente": lote.get('simbolo_lote', ''),
+                    "comitente": (scraper.BASE_URL + lote.get('simbolo_lote', '')) if lote.get('simbolo_lote', '') and not lote.get('simbolo_lote', '').startswith('http') else (lote.get('simbolo_lote', '') or logo_url),
                     "retirado": is_retirado
                 })
 
@@ -624,12 +641,11 @@ class SistemaLeiloes:
                 html_content
             )
 
-            # 5. Substituir Logo do Comitente
-            logo_url = self.selected_leilao.get('comitente_logo', '')
+            # 5. Substituir Logo do Comitente (Já calculado acima)
             if logo_url:
                 # Substituir no header
                 html_content = html_content.replace(
-                    'https://via.placeholder.com/60x60?text=Logo', 
+                    'https://via.placeholder.com/50x50?text=Logo', 
                     logo_url
                 )
                 # Substituir na tabela (template string do JS)
